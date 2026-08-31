@@ -1,0 +1,4 @@
+# One line ending in the repository and in the checkout, whatever the
+# contributor's OS prefers. Without this a Windows tool rewrites a whole file
+# on its way past, and the next diff is a wall of unreadable churn.
+* text=auto eol=lf
