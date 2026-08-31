@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Felipe Drummond
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Diagnostics for Tua Casa. Talks to devices directly, without the plugin.
 
 Useful when a key does not respond and you need to know whether the problem is

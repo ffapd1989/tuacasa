@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Felipe Drummond
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Tua Casa worker. Runs as a child process of the Stream Deck plugin.
 
 Speaks JSONL over stdin/stdout and reaches devices through two paths:

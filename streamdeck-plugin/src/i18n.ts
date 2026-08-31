@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Felipe Drummond
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Words that appear ON THE KEY, in the three interface languages.
 //
 // Kept apart from the panel's own strings (ui/i18n.js) because the reader is

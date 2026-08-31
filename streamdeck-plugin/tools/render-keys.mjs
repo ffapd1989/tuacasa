@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Felipe Drummond
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Renders every key state into one contact sheet, using the SAME functions the
 // physical key uses. Nothing here is a mockup: if a key looks wrong in the
 // browser, it looks wrong on the Deck.

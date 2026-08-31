@@ -1,6 +1,8 @@
-// Bundle do plugin. O banner injeta um `require` (createRequire) porque a lib
-// `ws` (WebSocket do SDK) usa require() de builtins, e o esbuild em ESM nao
-// suporta require dinamico sem esse shim.
+// SPDX-FileCopyrightText: 2026 Felipe Drummond
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Bundles the plugin. The banner injects a `require` (createRequire) because
+// `ws` -- the SDK's WebSocket -- calls require() on builtins, and esbuild in ESM
+// has no dynamic require without that shim.
 import * as esbuild from "esbuild";
 
 await esbuild.build({

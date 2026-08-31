@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Felipe Drummond
+// SPDX-License-Identifier: GPL-3.0-or-later
 // How every key is drawn. Pure functions: SVG in, data URI out.
 //
 // Kept apart from the plugin so the same code can be rendered outside the

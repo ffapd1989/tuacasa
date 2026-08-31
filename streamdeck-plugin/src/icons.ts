@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Felipe Drummond
+// SPDX-License-Identifier: GPL-3.0-or-later
 // The pictures a key can wear. One family of shapes, drawn in the key's own
 // 72x72 space and tinted with whatever colour the state calls for — so any
 // icon works on any action, and every icon still says on or off.
@@ -44,7 +46,7 @@ function fitted(art: string, minX: number, minY: number,
     ` scale(${scale.toFixed(4)})">${art}</g>`;
 }
 
-// Table lamp, after the Phosphor "Flat" lamp (MIT). The shade is the lit part:
+// Table lamp, after the Phosphor `lamp` glyph (MIT). The shade is the lit part:
 // filled with the state colour rather than the source's flat grey, so it goes
 // orange with everything else.
 const LAMP_SHADE =

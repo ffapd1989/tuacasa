@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Felipe Drummond
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Tua Casa — control your smart home from the Stream Deck.
 //
 // The plugin does not speak the device protocol. It spawns a Python worker
