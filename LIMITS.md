@@ -22,11 +22,6 @@ For an open-source repository this is common practice among community tools, and
 disclosed here rather than hidden. **For a Marketplace submission it must be replaced** with a
 credential registered for this plugin.
 
-**One icon is borrowed artwork whose licence is unverified.** The table lamp is traced from an
-SVG supplied by hand, in the 256-unit grid and duotone style of a well known icon set. That set
-is very likely MIT, but *likely* is not a licence: before publishing, identify the source and
-credit it, or redraw the lamp. Every other icon here was drawn for this plugin.
-
 ## What does not work, and why
 
 **Devices that reject the local key.** Some devices answer on port 6668, are correctly

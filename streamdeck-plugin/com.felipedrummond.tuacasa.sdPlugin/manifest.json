@@ -4,7 +4,7 @@
   "Version": "0.1.0.0",
   "Author": "Felipe Drummond",
   "URL": "https://github.com/ffapd1989/tuacasa",
-  "Description": "Control your smart home from the Stream Deck. Works locally on your network with Tuya-compatible devices (Smart Life). Keys show live state.",
+  "Description": "Control your smart home from the Stream Deck. Works with Tuya®-compatible devices — the ones already in your Smart Life® or Tuya Smart® app — directly over your network. Keys show live state.",
   "Category": "Tua Casa",
   "CategoryIcon": "imgs/plugin/category",
   "Icon": "imgs/plugin/plugin",

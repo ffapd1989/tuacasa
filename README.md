@@ -2,11 +2,19 @@
 
 # Tua Casa — your smart home on the Stream Deck
 
-[![License](https://img.shields.io/badge/license-MIT-3B6FD4)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-3B6FD4)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078D4)
 ![Stream Deck](https://img.shields.io/badge/Stream%20Deck-6.5%2B-101014)
 ![Interface](https://img.shields.io/badge/interface-pt%20%C2%B7%20en%20%C2%B7%20es-2E7D74)
+![Works with](https://img.shields.io/badge/works%20with-Tuya%C2%AE%20%C2%B7%20Smart%20Life%C2%AE-5A6B7C)
 ![Marketplace](https://img.shields.io/badge/Elgato%20Marketplace-not%20there%20yet-8a8a90)
+
+**Works with Tuya®-compatible devices** — the sockets, wall switches, bulbs and curtain
+motors you already run from the **Smart Life®** or **Tuya Smart®** app. Tuya is the
+platform behind hundreds of white-label brands, so if your device pairs with either app,
+this plugin can drive it. Which ones work, which never will, and why:
+[docs/TUYA.md](docs/TUYA.md). Not affiliated with either company — see
+[Trademarks](#trademarks).
 
 Turn Stream Deck keys into the light switches, blinds and scenes of your house. The keys
 **show live state** — lit when the light is on, with the real power draw when the socket
@@ -18,7 +26,12 @@ automatically, and the key marks them with a small blue dot.
 
 > **Pairing happens inside the Stream Deck.** Type the user code from your app, scan the QR
 > that appears in the panel, and you are done. No terminal, no config file, no developer
-> account.
+> account. Step by step, with pictures: [docs/PAIRING.md](docs/PAIRING.md).
+
+![Light and blind keys in every state](docs/img/keys-states-en.png)
+
+<sup>Contact sheet from `npm run keys`, drawn by the same functions that draw the physical
+key. Nothing here is a mockup.</sup>
 
 ## What a key can do
 
@@ -43,6 +56,8 @@ lamp, ceiling spot, socket, wall switch, fan, blind, framed picture, star, Zzz, 
 desk, night, power — and any of nine accent colours. The picture still carries the state: the
 spot only casts a beam when it is on, the switch flips, the blind hangs down as far as it
 actually is.
+
+![The icon gallery, lit and unlit](docs/img/keys-icons-en.png)
 
 ## Requirements
 
@@ -71,17 +86,7 @@ it with the same app. From there the panel lists everything it found.
 
 ## How it works
 
-```
-Stream Deck
-   │  SDK v2 (WebSocket)
-   ▼
-Plugin (TypeScript)          ← resident process, draws the keys
-   │  spawn + stdin/stdout, JSONL
-   ▼
-Worker (Python)              ← child process, owns the connections
-   ├── LAN: TCP 6668 + AES, one persistent connection per device
-   └── cloud: device-sharing session + MQTT, for devices that refuse local
-```
+![The two routes out of the worker](docs/img/routes-en.svg)
 
 Holding the connection open is the whole trick. Measured on a real house:
 
@@ -92,9 +97,8 @@ Holding the connection open is the whole trick. Measured on a real house:
 | press and confirm, end to end | 206 ms |
 | through the cloud fallback | ~250 ms |
 
-Both paths speak the same language outward — the device's own **status codes**. Only the LAN
-protocol uses numeric data points, and that conversion comes from a map the API itself
-provides, never guessed.
+Why the ecosystem works this way, what the account session actually buys, and which devices
+can never go local: [docs/TUYA.md](docs/TUYA.md).
 
 State is not polled. Each device pushes changes as they happen, so a lamp switched from the
 phone repaints the key within seconds.
@@ -140,6 +144,19 @@ Plugin log: `com.felipedrummond.tuacasa.sdPlugin/logs/`.
 
 Known limits and what is not supported: [LIMITS.md](LIMITS.md).
 
+## The rest of the documentation
+
+| | |
+|---|---|
+| [docs/PAIRING.md](docs/PAIRING.md) | Connecting your account, step by step, with pictures |
+| [docs/TUYA.md](docs/TUYA.md) | The Tuya / Smart Life ecosystem, and where this plugin sits in it |
+| [LIMITS.md](LIMITS.md) | What does not work, and why |
+| [PRIVACY.md](PRIVACY.md) | What is stored, and what leaves your machine |
+| [THIRD-PARTY.md](THIRD-PARTY.md) | Every dependency, with version, licence and author |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to get it running, and the house rules |
+| [SECURITY.md](SECURITY.md) | Reporting a vulnerability, and what is in scope |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | What still stands between this and a store release |
+
 ## Acknowledgements
 
 This plugin stands on work by others, all under permissive licenses:
@@ -148,8 +165,11 @@ This plugin stands on work by others, all under permissive licenses:
 |---|---|---|
 | [tinytuya](https://github.com/jasonacox/tinytuya) | Jason A. Cox | MIT |
 | [tuya-device-sharing-sdk](https://github.com/tuya/tuya-device-sharing-sdk) | Tuya Inc. | MIT |
-| [python-qrcode](https://github.com/lincolnloop/python-qrcode) | Lincoln Loop | BSD |
+| [python-qrcode](https://github.com/lincolnloop/python-qrcode) | Lincoln Loop | BSD-3-Clause |
 | [@elgato/streamdeck](https://github.com/elgatosf/streamdeck) | Elgato | MIT |
+
+Every dependency, direct and transitive, with versions and the choice made on the two that
+ship under a choice of licences: [THIRD-PARTY.md](THIRD-PARTY.md).
 
 The QR pairing flow is the one the Home Assistant Tuya integration established. See
 [LIMITS.md](LIMITS.md) for an honest note about the application identity it relies on.
@@ -162,4 +182,12 @@ devices this plugin can talk to.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+**GPL-3.0-or-later** — see [LICENSE](LICENSE).
+
+Use it, study it, change it, pass it on. What the licence adds is that anyone who receives
+it, modified or not, must be able to get the complete source under these same terms: a fork
+of this cannot be closed, and neither can a fork of that fork.
+
+It requires freedom, not a price of zero — see
+[docs/PUBLISHING.md](docs/PUBLISHING.md#the-licence-what-gpl-30-does-and-does-not-do) for
+what that distinction means in practice.

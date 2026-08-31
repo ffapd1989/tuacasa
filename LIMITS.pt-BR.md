@@ -22,12 +22,6 @@ Para um repositório aberto isso é prática comum entre ferramentas da comunida
 declarado aqui em vez de escondido. **Para submeter à Marketplace, precisa ser substituído** por
 uma credencial registrada para este plugin.
 
-**Um ícone é arte de terceiro com licença não conferida.** O abajur é decalcado de um SVG
-entregue à mão, na grade de 256 unidades e no estilo duotone de um conjunto de ícones
-conhecido. Esse conjunto é provavelmente MIT, mas *provavelmente* não é licença: antes de
-publicar, identifique a origem e credite, ou redesenhe o abajur. Todos os outros ícones aqui
-foram desenhados para este plugin.
-
 ## O que não funciona, e por quê
 
 **Aparelhos que rejeitam a chave local.** Alguns respondem na porta 6668, são corretamente
