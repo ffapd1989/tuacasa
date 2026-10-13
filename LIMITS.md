@@ -53,6 +53,13 @@ and the next start replays a spent token for an unhelpful `sign invalid`. Two pr
 the same session also race to renew and burn each other's token, so run one worker at a time:
 the diagnostics in `tools/probe.py` deliberately never touch the cloud session.
 
+**The refresh token also expires when nobody uses it.** The worker can only keep the session
+alive while it runs. Measured on a real install: the session came back after 15 hours with the
+computer off, and was dead after 46 — the refresh endpoint answers `1010 token is expired`,
+which the SDK swallows, so the log shows the `sign invalid` of the next call instead. There is
+no recovering it. LAN keys keep working; cloud keys and app scenes show *reconnect* under a
+warning mark, and the panel asks for the QR again without touching the inventory.
+
 **A Stream Deck action never exposes its settings synchronously.** `Action` offers only
 `getSettings()`, a promise — there is no `.settings` property, whatever an editor's `any` cast
 lets you write. Anything that repaints outside an event (a device pushing a new state, for

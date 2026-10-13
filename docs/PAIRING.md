@@ -147,6 +147,12 @@ re-pair that device in the app, then press **Rescan network**. Error `914` means
 was rejected; `901` and `905` mean the packet never arrived.
 [LIMITS.md](../LIMITS.md) has the full list.
 
+**Cloud keys show *reconnect* under a warning mark.** The account session expired, which
+happens when the computer stays off for a day or more. Open the panel of any Tua Casa key:
+the pairing card is back on top. Type the user code and scan the QR; nothing you set up is
+lost. Do not use **Disconnect account** for this — it deletes the inventory too, and no key
+works until the QR is scanned. Why it expires: [LIMITS.md](../LIMITS.md).
+
 **Two workers at once burn each other's session.** The refresh token is single use. Run
 one Stream Deck, and note that `tools/probe.py` deliberately never touches the cloud
 session for exactly this reason.

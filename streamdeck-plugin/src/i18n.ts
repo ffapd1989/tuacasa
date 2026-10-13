@@ -16,6 +16,8 @@ export type KeyText = {
   pickBlind: [string, string];
   pickScene: [string, string];
   offline: string;
+  /** The account session died: cloud keys need the QR scanned again. */
+  reconnect: string;
   open: string;
   close: string;
   stop: string;
@@ -39,6 +41,7 @@ const TEXT: Record<Locale, KeyText> = {
     pickBlind: ["escolha", "a persiana"],
     pickScene: ["escolha", "a cena"],
     offline: "sem contato",
+    reconnect: "reconectar",
     open: "abrir",
     close: "fechar",
     stop: "parar",
@@ -59,6 +62,7 @@ const TEXT: Record<Locale, KeyText> = {
     pickBlind: ["choose", "a blind"],
     pickScene: ["choose", "a scene"],
     offline: "offline",
+    reconnect: "reconnect",
     open: "open",
     close: "close",
     stop: "stop",
@@ -79,6 +83,7 @@ const TEXT: Record<Locale, KeyText> = {
     pickBlind: ["elige", "la persiana"],
     pickScene: ["elige", "la escena"],
     offline: "sin señal",
+    reconnect: "reconectar",
     open: "abrir",
     close: "cerrar",
     stop: "parar",

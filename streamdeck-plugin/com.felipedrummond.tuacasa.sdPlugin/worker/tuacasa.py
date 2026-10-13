@@ -38,7 +38,7 @@ stdout:
     {"evt": "qr",       "matrix": [[0,1,...], ...]}
     {"evt": "paired",   "ok": true, "user": "..."}
     {"evt": "progress", "step": "...", "detail": "..."}
-    {"evt": "error",    "target": "<id>", "message": "..."}
+    {"evt": "error",    "target": "<id>", "scene": "<scene_id>", "message": "..."}
 """
 
 import json
@@ -516,6 +516,7 @@ class Hub:
         self.cloud_scenes = []
         self.names = {}
         self.pairing = None
+        self.session_expired = False
         self._load()
 
     # ---------- loading ----------
@@ -541,7 +542,8 @@ class Hub:
             log(f"cloud unavailable ({type(error).__name__}: {error}); LAN only"
                 + (" -- session expired, pair again to restore it" if expired else ""))
             if expired:
-                emit(evt="sessionExpired")
+                self.session_expired = True
+                self.announce()
             return
         self.cloud, self.cloud_scenes = cloud, scenes
         log(f"cloud connected (MQTT live), {len(scenes)} scenes")
@@ -617,7 +619,7 @@ class Hub:
              # Paired means "there is a session on disk", not "the cloud is up".
              # Otherwise a slow cloud would send the user back to the QR screen.
              paired=self.tokens_file.exists(), configured=bool(self.records),
-             cloudReady=bool(self.cloud))
+             cloudReady=bool(self.cloud), sessionExpired=self.session_expired)
 
     # ---------- onboarding ----------
 
@@ -630,6 +632,7 @@ class Hub:
                 info = pair(user_code.strip(), self.tokens_file)
                 emit(evt="progress", step="reading", detail="fetching your devices")
                 self.cloud = Cloud(self.tokens_file, self.publish)
+                self.session_expired = False
                 self.cloud_scenes = self.cloud.scenes()
                 inventory = build_inventory(self.cloud)
                 self._save_json(self.devices_file,
@@ -665,6 +668,7 @@ class Hub:
         for path in (self.tokens_file, self.devices_file):
             path.unlink(missing_ok=True)
         self.records, self.cloud, self.cloud_scenes = {}, None, []
+        self.session_expired = False
         for device in self.lan.values():
             device.stopping.set()
         self.lan = {}
@@ -811,7 +815,7 @@ def main() -> None:
         try:
             hub.handle(request)
         except Exception as error:
-            emit(evt="error", target=request.get("target"),
+            emit(evt="error", target=request.get("target"), scene=request.get("scene"),
                  message=f"{type(error).__name__}: {error}")
 
 

@@ -123,6 +123,7 @@
 <!-- ── pairing: shown until the account is connected ───────────────── -->
 <div id="onboarding" class="card hidden">
   <h2 id="t-connect">Connect your account</h2>
+  <div class="explain hidden" id="expiredWhy"></div>
   <ol class="steps">
     <li id="t-step1"></li>
     <li id="t-step2"></li>
@@ -269,6 +270,10 @@ const I18N = {
   en: {
     language: "Language", auto: "Follow Stream Deck",
     connect: "Connect your account", connectbtn: "Connect",
+    expired: "Your account session expired",
+    expiredWhy: "Tuya ends the session when this computer stays off for a long time — in practice, " +
+               "a day or more. Devices on your network keep working; the ones marked ☁ and the " +
+               "scenes from the app come back once you connect again. <b>Nothing you set up is lost.</b>",
     step1: "In the Smart Life app, open <b>Me → ⚙ → Account and Security → User Code</b>.",
     step2: "Type that code below and press Connect.",
     step3: "A QR code appears here. Scan it with the same app to authorise.",
@@ -314,6 +319,11 @@ const I18N = {
   pt: {
     language: "Idioma", auto: "Seguir o Stream Deck",
     connect: "Conecte sua conta", connectbtn: "Conectar",
+    expired: "A sessão da conta expirou",
+    expiredWhy: "A Tuya encerra a sessão quando o computador fica desligado por muito tempo — na " +
+               "prática, um dia ou mais. Os aparelhos da sua rede continuam funcionando; os marcados " +
+               "com ☁ e as cenas do app voltam quando você conectar de novo. <b>Nada do que está " +
+               "configurado se perde.</b>",
     step1: "No app Smart Life, abra <b>Eu → ⚙ → Conta e segurança → Código de usuário</b>.",
     step2: "Digite esse código abaixo e aperte Conectar.",
     step3: "Um QR aparece aqui. Escaneie com o mesmo app para autorizar.",
@@ -359,6 +369,11 @@ const I18N = {
   es: {
     language: "Idioma", auto: "Seguir al Stream Deck",
     connect: "Conecta tu cuenta", connectbtn: "Conectar",
+    expired: "La sesión de tu cuenta expiró",
+    expiredWhy: "Tuya cierra la sesión cuando este ordenador pasa apagado mucho tiempo — en la " +
+               "práctica, un día o más. Los aparatos de tu red siguen funcionando; los marcados " +
+               "con ☁ y las escenas de la app vuelven cuando te conectes de nuevo. <b>No se pierde " +
+               "nada de lo que configuraste.</b>",
     step1: "En la app Smart Life, abre <b>Yo → ⚙ → Cuenta y seguridad → Código de usuario</b>.",
     step2: "Escribe ese código abajo y pulsa Conectar.",
     step3: "Aparecerá un QR aquí. Escanéalo con la misma app para autorizar.",
@@ -406,6 +421,7 @@ const I18N = {
 let ws = null, ctx = null, actionId = "", settings = {}, global = {};
 let appLang = "en", lang = "en";
 let loads = [], scenes = [], localScenes = [], paired = false, journal = [];
+let sessionExpired = false;
 // The families the key can actually draw with arrive from the plugin, so this
 // panel never offers a font the rasteriser would silently swap out.
 let fonts = ["Segoe UI"];
@@ -490,6 +506,7 @@ function handleFromPlugin(payload) {
     icons = payload.icons && payload.icons.length ? payload.icons : icons;
     tints = payload.tints && payload.tints.length ? payload.tints : tints;
     paired = !!payload.paired;
+    sessionExpired = !!payload.sessionExpired;
     showRightPanel();
     buildFonts();
     buildIcons();
@@ -508,6 +525,7 @@ function handleFromPlugin(payload) {
   } else if (payload.evt === "paired") {
     if (payload.ok) {
       paired = true;
+      sessionExpired = false;
       document.getElementById("qrBox").classList.add("hidden");
       setStatus(T().ok, "good");
       askCatalog();
@@ -568,7 +586,8 @@ function applyLanguage() {
     if (!el || !t[key]) return;
     if (asHtml) el.innerHTML = t[key]; else el.textContent = t[key];
   };
-  text("t-connect", "connect"); text("t-step1", "step1", true);
+  text("t-connect", sessionExpired ? "expired" : "connect"); text("expiredWhy", "expiredWhy", true);
+  text("t-step1", "step1", true);
   text("t-step2", "step2", true); text("t-step3", "step3", true);
   text("t-usercode", "usercode"); text("t-load", "load"); text("t-scene", "scene");
   text("t-scenekind", "scenekind"); text("t-newscene", "newscene"); text("t-move", "move");
@@ -591,8 +610,12 @@ function applyLanguage() {
 }
 
 function showRightPanel() {
-  document.getElementById("onboarding").classList.toggle("hidden", paired);
+  // An expired session keeps the configuration on screen: pairing again must not
+  // go through "Disconnect account", which deletes the inventory.
+  document.getElementById("onboarding").classList.toggle("hidden", paired && !sessionExpired);
   document.getElementById("config").classList.toggle("hidden", !paired);
+  document.getElementById("expiredWhy").classList.toggle("hidden", !sessionExpired);
+  document.getElementById("t-connect").textContent = sessionExpired ? T().expired : T().connect;
 }
 
 function layoutForAction() {

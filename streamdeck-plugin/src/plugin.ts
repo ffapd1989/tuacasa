@@ -32,7 +32,7 @@ import { fileURLToPath } from "node:url";
 import { createInterface } from "node:readline";
 import { asLocale, keyText, type KeyText, type Locale } from "./i18n.ts";
 import {
-  allOffKey, blindKey, deviceKey, iconGallery, isTint, noticeKey, sceneKey, wakingKey,
+  alertKey, allOffKey, blindKey, deviceKey, iconGallery, isTint, noticeKey, sceneKey, wakingKey,
   FONTS, PLAIN_LABEL, TINTS, type KeyLook,
 } from "./keys.ts";
 
@@ -56,6 +56,8 @@ type Load = {
 type CloudScene = { id: string; home: string; name: string; homeName: string };
 type DeviceState = { values: Record<string, unknown>; online: boolean; via: string };
 type JournalLine = { at: number; bad: boolean; text: string };
+/** What a failed command was aimed at, so the key that sent it can say so. */
+type Failure = { target?: string; scene?: string };
 
 const JOURNAL_LIMIT = 200;
 
@@ -79,12 +81,15 @@ class Worker {
   readonly localScenes: string[] = [];
   readonly states = new Map<string, DeviceState>();
   private listeners = new Set<() => void>();
+  private failureListeners = new Set<(failed: Failure) => void>();
   private subscribed = new Set<string>();
   /** Recent activity, so the panel can show what is happening without
    *  anyone having to open a log file. */
   readonly journal: JournalLine[] = [];
   alive = false;
   paired = false;
+  /** The account session died for good: only a new QR scan brings the cloud back. */
+  sessionExpired = false;
 
   note(text: string, bad = false): void {
     this.journal.push({ at: Date.now(), bad, text });
@@ -105,6 +110,10 @@ class Worker {
   onChange(listener: () => void): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
+  }
+
+  onFailure(listener: (failed: Failure) => void): void {
+    this.failureListeners.add(listener);
   }
 
   private notify(): void {
@@ -167,6 +176,7 @@ class Worker {
         this.localScenes.push(...((event.localScenes ?? []) as string[]));
         this.alive = true;
         this.paired = !!event.paired;
+        this.sessionExpired = !!event.sessionExpired;
         this.note(`catalogue: ${this.loads.length} devices, ${this.scenes.length} scenes, ` +
                   `${this.localScenes.length} of my own`);
         for (const target of this.subscribed) this.send({ cmd: "subscribe", targets: [target] });
@@ -197,6 +207,7 @@ class Worker {
       case "error":
         streamDeck.logger.warn(`worker: ${event.message}`);
         this.note(event.message ?? "unknown error", true);
+        for (const listener of this.failureListeners) listener(event);
         return;
       default:
         // qr, paired, progress: only the property inspector cares.
@@ -317,6 +328,7 @@ function catalogForInspector(): any {
     evt: "catalog",
     alive: worker.alive,
     paired: worker.paired,
+    sessionExpired: worker.sessionExpired,
     loads: worker.loads,
     scenes: worker.scenes,
     localScenes: worker.localScenes,
@@ -335,6 +347,21 @@ abstract class TuaCasaKey<T extends Labelled> extends SingletonAction<T> {
   private known = new Map<string, { action: any; settings: T }>();
 
   protected abstract paint(action: any, settings: T, text: KeyText): void;
+
+  constructor() {
+    super();
+    worker.onFailure((failed) => this.alertFor(failed));
+  }
+
+  /** A press that failed shows the Deck's own warning on the key that sent it,
+   *  instead of failing in silence. */
+  private alertFor(failed: Failure): void {
+    for (const { action, settings } of this.known.values()) {
+      const mine = settings as Failure;
+      if ((failed.target && mine.target === failed.target) ||
+          (failed.scene && mine.scene === failed.scene)) void action.showAlert();
+    }
+  }
 
   private repaintAll(): void {
     const text = keyText(currentLocale());
@@ -402,6 +429,10 @@ class SwitchKey extends TuaCasaKey<LoadSettings> {
     if (!worker.paired) return void action.setImage(noticeKey(text.notPaired));
     if (!settings.target || !settings.code) return void action.setImage(noticeKey(text.pickLoad));
 
+    if (worker.sessionExpired && load?.via === "cloud") {
+      return void action.setImage(alertKey(settings.label || load.name, text.reconnect, dressed));
+    }
+
     const state = worker.stateOf(settings.target);
     const on = !!state?.values[settings.code];
     // No state yet means "not read yet", not "offline". Saying offline while the
@@ -438,6 +469,9 @@ class BlindKey extends TuaCasaKey<BlindSettings> {
     }
     if (!worker.paired) return void action.setImage(noticeKey(text.notPaired));
     if (!settings.target) return void action.setImage(noticeKey(text.pickBlind));
+    if (worker.sessionExpired && load?.via === "cloud") {
+      return void action.setImage(alertKey(settings.label || load.name, text.reconnect, dressed));
+    }
 
     const state = worker.stateOf(settings.target);
     const raw = state?.values["percent_control"];
@@ -500,6 +534,9 @@ class SceneKey extends TuaCasaKey<SceneSettings> {
     const isLocal = !!settings.localName;
     const found = worker.scenes.find((scene) => scene.id === settings.scene);
     const title = settings.label || settings.localName || found?.name || "";
+    if (worker.sessionExpired && !isLocal) {
+      return void action.setImage(alertKey(title, text.reconnect, dressed));
+    }
     // Only a local scene can be re-recorded, so only it earns the hint.
     action.setImage(sceneKey(title, isLocal ? text.tapApplies : "", isLocal, dressed));
   }

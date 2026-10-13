@@ -150,6 +150,13 @@ vencida — refaça o pareamento daquele aparelho no aplicativo e clique em **Va
 rede**. O erro `914` significa que a chave foi rejeitada; `901` e `905` significam que o
 pacote nunca chegou. [LIMITS.pt-BR.md](../LIMITS.pt-BR.md) tem a lista completa.
 
+**As teclas da nuvem mostram *reconectar* sob um sinal de alerta.** A sessão da conta
+expirou, o que acontece quando o computador fica desligado por um dia ou mais. Abra o painel
+de qualquer tecla Tua Casa: o cartão de pareamento volta ao topo. Digite o código de usuário e
+escaneie o QR; nada do que está configurado se perde. Não use **Desconectar conta** para isso
+— ele apaga também o inventário, e nenhuma tecla funciona até o QR ser lido. Por que ela
+vence: [LIMITS.pt-BR.md](../LIMITS.pt-BR.md).
+
 **Dois workers ao mesmo tempo queimam a sessão um do outro.** O refresh token é de uso
 único. Rode um Stream Deck só, e note que o `tools/probe.py` deliberadamente nunca toca na
 sessão da nuvem exatamente por isso.

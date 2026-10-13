@@ -54,6 +54,7 @@ const BLUE = "#5aa9e6";
 const GREEN = "#7fd1a6";
 const GONE = "#2a2d33";
 const INK = "#e8eaed";
+const ALERT = "#e07a5f";
 
 // The band the icons occupy, and the widest a line of label may be.
 const ART_TOP = 8;
@@ -275,6 +276,16 @@ export function allOffKey(title: string, detail: string, armed: boolean,
                           look: KeyLook = PLAIN_LOOK): string {
   const tone = armed ? look.tint || ON : OFF;
   return compose(iconArt(look.icon, tone, armed), "", title, detail, tone, look.label, tone);
+}
+
+/** A key that cannot work until the owner does something: its own picture and
+ *  name, dimmed, under a warning mark — unlike "offline", this one will not
+ *  fix itself. */
+export function alertKey(title: string, detail: string, look: KeyLook = PLAIN_LOOK): string {
+  const warning = `<path d="M63 3.5 L68.5 13 H57.5 Z" fill="${ALERT}"/>` +
+    `<rect x="62.4" y="6.6" width="1.2" height="3.6" fill="${PAPER}"/>` +
+    `<circle cx="63" cy="11.5" r="0.7" fill="${PAPER}"/>`;
+  return compose(iconArt(look.icon, GONE), warning, title, detail, ALERT, look.label, GONE);
 }
 
 /** A message the owner has to read, centred and big enough to actually read.

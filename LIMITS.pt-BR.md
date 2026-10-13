@@ -53,6 +53,14 @@ explicativo. Dois processos com a mesma sessão também disputam a renovação e
 do outro, então rode um worker por vez: o diagnóstico em `tools/probe.py` de propósito nunca
 toca na sessão de nuvem.
 
+**O refresh token também vence quando ninguém o usa.** O worker só mantém a sessão viva
+enquanto está rodando. Medido numa casa real: a sessão voltou depois de 15 horas com o
+computador desligado, e estava morta depois de 46 — o endpoint de renovação responde
+`1010 token is expired`, que a SDK engole, então o log mostra o `sign invalid` da chamada
+seguinte. Não há como recuperar. As teclas da rede local continuam funcionando; as da nuvem e
+as cenas do app mostram *reconectar* sob um sinal de alerta, e o painel pede o QR de novo sem
+mexer no inventário.
+
 **Uma action do Stream Deck nunca expõe as próprias settings de forma síncrona.** A `Action`
 só oferece `getSettings()`, que é promise — não existe propriedade `.settings`, por mais que um
 cast `any` deixe você escrever isso. Então tudo que repinta fora de um evento (um aparelho
