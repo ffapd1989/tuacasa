@@ -8,14 +8,38 @@ issue is not filed twice.
 
 ## Getting it running
 
+You need Windows, Node 20+, Python 3.14 (`py -3.14`) and the Stream Deck app.
+
 ```powershell
 pip install -r requirements.txt
 cd streamdeck-plugin
 npm install
 npm run build
-streamdeck link "com.felipedrummond.tuacasa.sdPlugin"
-streamdeck restart com.felipedrummond.tuacasa
+npx streamdeck link "com.felipedrummond.tuacasa.sdPlugin"
+npx streamdeck restart com.felipedrummond.tuacasa
 ```
+
+A linked plugin runs the worker on your own Python. Once `npm run python` or `npm run pack`
+has run, it runs on the bundled one in `com.felipedrummond.tuacasa.sdPlugin/python/`
+instead — delete that folder to go back to yours.
+
+## Building the release package
+
+```powershell
+cd streamdeck-plugin
+npx streamdeck stop com.felipedrummond.tuacasa    # only if it is linked: Windows locks the running python.exe
+npm run pack
+npx streamdeck restart com.felipedrummond.tuacasa
+```
+
+That builds the bundle, downloads the Windows embeddable Python (pinned version, checked
+against its SHA-256 from python.org), installs `requirements.txt` into it, checks that every
+package imports, and writes `dist/com.felipedrummond.tuacasa.streamDeckPlugin`. The package
+is what goes on a GitHub release; it is about 19 MB, nearly all of it Python and
+`cryptography`. The Elgato CLI leaves `*.log` out, so the `logs/` folder never ships.
+
+`npm run promo` redraws the plugin icon PNGs and the social preview cards in
+`docs/img/social-preview-*.png` from the real key functions.
 
 Two things that help before you touch the plugin:
 

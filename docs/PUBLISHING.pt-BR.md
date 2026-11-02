@@ -7,8 +7,13 @@ destinos são avaliados separadamente, porque a régua deles é diferente:
 
 | Destino | Veredito |
 |---|---|
-| **Repositório público no GitHub** | pronto — nada encontrado que precise sair antes |
-| **Loja da Elgato (Marketplace)** | bloqueado, por um item, e não é a licença |
+| **Repositório público no GitHub, com versão para baixar** | pronto — os passos que faltam estão no [LAUNCH.pt-BR.md](LAUNCH.pt-BR.md) |
+| **Loja da Elgato (Marketplace)** | **fora dos planos**, por decisão de 02/11/2026 — um bloqueio, e não é a licença |
+
+A loja ficou de lado por causa da [identidade de aplicativo emprestada](#1-bloqueia-a-loja--a-identidade-de-aplicativo-emprestada):
+não existe caminho público para um desenvolvedor independente registrar uma própria, e o
+único par conhecido é o do Home Assistant. Todo o resto que uma versão de loja exigiria está
+em [Se a loja voltar](#se-a-loja-voltar), para o trabalho não se perder.
 
 ## Resolvido
 
@@ -37,9 +42,9 @@ como processo separado conversando por WebSocket.
 compatibilidade é *declarada* — "funciona com aparelhos compatíveis com Tuya" — e os dois
 READMEs e o [docs/TUYA.pt-BR.md](TUYA.pt-BR.md) trazem aviso explícito de não afiliação.
 
-**O onboarding não exige terminal.** O pareamento acontece dentro do painel do Stream
-Deck: [docs/PAIRING.pt-BR.md](PAIRING.pt-BR.md). A instalação ainda exige — veja a
-pendência aberta abaixo.
+**Nada exige terminal.** A versão publicada é um arquivo `.streamDeckPlugin` para dar dois
+cliques, e ele leva o próprio Python, então quem instala não precisa de mais nada. O
+pareamento acontece dentro do painel do Stream Deck: [docs/PAIRING.pt-BR.md](PAIRING.pt-BR.md).
 
 ## A licença: o que a GPL-3.0 faz e o que ela não faz
 
@@ -73,19 +78,23 @@ palavra sobre licença de software, e as
 afeta, já que a titularidade do direito autoral continua sua de qualquer jeito. Produtos
 podem ser listados como gratuitos ou pagos.
 
-Duas ressalvas, declaradas como ressalvas porque não foram verificáveis de fora:
+Duas ressalvas:
 
 - **O Maker Agreement é o texto vinculante, e ele é privado** — mora dentro do Maker
   Console, nas Settings da organização. Leia antes de submeter. É lá que estaria uma
   cláusula incompatível com a GPL, se existir.
-- **DRM.** O Marketplace oferece aos plugins cifragem de arquivo e verificação de
-  integridade. Esse é o ponto clássico de atrito entre a GPL e uma loja de aplicativos — o
-  §6 da GPLv3 e a proibição de impor "restrições adicionais" conflitam com distribuir um
-  binário GPL que o destinatário não pode modificar e executar. O material público
-  descreve os plugins como *elegíveis a* DRM, o que sugere adesão opcional; **não foi
-  possível confirmar se é recusável.** Se for, recuse e o conflito não acontece.
+- **O DRM não é opcional.** O TranscriTranslator, do mesmo autor, passou pela loja em
+  outubro de 2026: os builds da loja são cifrados, e para isso a loja exige SDK 3, Stream
+  Deck 7.1+ e Node 24. O §6 da GPLv3 proíbe o *licenciado* de distribuir um binário GPL que
+  o destinatário não possa modificar e executar. Ele não amarra o *titular* do direito
+  autoral: enquanto toda linha de código GPL do plugin for do próprio autor — e hoje é,
+  porque toda dependência é permissiva —, o autor pode distribuir um build cifrado da
+  própria obra na loja, com o código-fonte aberto aqui.
 
-Nenhuma das duas é o que bloqueia uma submissão hoje.
+É esse segundo ponto que uma contribuição de fora mudaria. Depois que o código de outra
+pessoa entra sob a GPL, um build cifrado para a loja precisa da permissão dela também. Se a
+loja voltar à mesa um dia, peça a concordância de quem contribui **antes** do merge, não
+depois.
 
 ## Pendências
 
@@ -101,10 +110,19 @@ Para um **repositório de código aberto** isso é prática comum entre ferramen
 comunidade, e está declarado em vez de escondido — veja o
 [LIMITS.pt-BR.md](../LIMITS.pt-BR.md). Não bloqueia a publicação no GitHub.
 
-Para uma **submissão à loja** tem de ser substituído por uma credencial registrada para
-este plugin. Trate como feature com custo, não como polimento.
+Para uma **submissão à loja** tem de ser substituído. Pesquisado em 02/11/2026:
 
-### 2. Não bloqueia — resolvido
+- A Tuya não publica nenhum caminho de autoatendimento para obter um `client_id` deste
+  fluxo de QR. O que o Home Assistant usa saiu do trabalho da própria Tuya naquela
+  integração.
+- As outras bibliotecas abertas que fazem esse fluxo usam o mesmo par. O README do
+  open-tuya diz com todas as letras que é "o único par conhecido que funciona".
+- As alternativas legítimas são **pedir à Tuya** uma identidade própria deste plugin, ou
+  fazer cada usuário criar um projeto de nuvem gratuito no site de desenvolvedor da Tuya e
+  colar o Access ID e o Secret no painel — uns dez passos no site da Tuya, um período de
+  teste a renovar de tempos em tempos e um caminho de nuvem mais fraco.
+
+### 2. Resolvido — o único desenho emprestado
 
 O abajur, a única arte não desenhada para este plugin, é o glifo `lamp` do **Phosphor
 Icons**, MIT. Verificado contra o `LICENSE` do próprio Phosphor e pela comparação do path:
@@ -112,14 +130,15 @@ mesma grade de 256 unidades, mesmos vértices. O aviso de copyright dele está r
 [THIRD-PARTY.pt-BR.md](../THIRD-PARTY.pt-BR.md#arte), que é o que a MIT exige. Nada mais em
 `imgs/` veio de fora.
 
-### 3. Não bloqueia — a instalação ainda pede terminal
+### 3. Resolvido — instalar sem terminal
 
-O pareamento está no painel, mas colocar o plugin na máquina ainda é `pip install`,
-`npm install`, `npm run build`, `streamdeck link`
-([LEIA-ME](../README.pt-BR.md#instalar)). Isso serve para um público de GitHub e é
-errado para um público de loja, que espera um arquivo `.streamDeckPlugin` para dar dois
-cliques. Empacotar um é o passo natural seguinte, e ele vai expor a dependência de Python
-como o obstáculo real: o plugin precisa de Python no PATH, e o usuário de loja não terá.
+O `npm run pack` gera o `dist/com.felipedrummond.tuacasa.streamDeckPlugin` com o Python
+embutível do Windows dentro dele
+([CONTRIBUTING.pt-BR.md](../CONTRIBUTING.pt-BR.md#gerando-o-pacote-de-distribuição)).
+Conferido em 02/11/2026: o worker subiu no Python embutido num ambiente sem Python no PATH, e
+no Stream Deck do autor levantou 45 cargas e a sessão da nuvem (MQTT incluído) só com o
+runtime embutido. O preço é o tamanho: cerca de 19 MB, quando o plugin em si tem menos de
+1 MB.
 
 ### 4. Não bloqueia — decisões que merecem uma segunda olhada
 
@@ -127,21 +146,32 @@ como o obstáculo real: o plugin precisa de Python no PATH, e o usuário de loja
   para que o repositório seja clonável-e-linkável sem passo de build. Este não, porque
   bundle desatualizado num diff é ruído que ninguém revisa. Reverter é uma linha do
   `.gitignore`.
-- **Só Windows.** Nada no desenho é específico de Windows além do lançador de Python e do
+- **Só Windows.** Nada no desenho é específico de Windows além do runtime de Python e do
   diretório de estado, mas nada foi testado em outro lugar, e o manifest declara Windows
   sozinho.
 - **Cor e brilho são lidos mas não expostos.** Está no
   [LIMITS.pt-BR.md](../LIMITS.pt-BR.md) para ninguém abrir a mesma issue duas vezes.
+- **Nomear as teclas de um interruptor de várias teclas ainda é editar um JSON.** O rótulo
+  da própria tecla cobre o caso do dia a dia, então isso só afeta os nomes na lista de
+  aparelhos.
 
-## Antes do primeiro push
+## Se a loja voltar
 
-- [ ] Ler o Maker Agreement se a loja for destino algum dia (pendência 1 e a ressalva de
-      DRM acima)
-- [ ] Decidir público ou privado no GitHub — hoje o repositório é privado
-- [ ] Ligar o **relato privado de vulnerabilidade** nas configurações do repositório. O
-      [SECURITY.pt-BR.md](../SECURITY.pt-BR.md) manda as pessoas para esse botão, e sem
-      ativar a opção o botão não existe — o que deixa uma issue pública como única rota
-      para um relato que jamais deveria ser público
-- [ ] Instalar do zero numa pasta limpa, seguindo só o README, numa máquina que não seja a
-      do autor. É a checagem que pega o que todas as outras deixam passar: um passo que só
-      funciona porque a máquina do autor já tinha algo instalado.
+Tudo abaixo foi aprendido levando o TranscriTranslator para a Marketplace, e vale aqui sem
+mudança. Nada disso está feito, de propósito: é trabalho que só a loja pede.
+
+- [ ] A pendência 1, substituída — sem ela, nada mais desta lista importa
+- [ ] SDK 3: `@elgato/streamdeck` 3.x, `SDKVersion: 3`, `Software.MinimumVersion: "7.1"`,
+      `Nodejs.Version: "24"`. O SDK 3 se recusa a conectar abaixo do 7.1, e deixa de disparar
+      `onDidReceiveSettings` para mudanças que o próprio plugin faz
+- [ ] Ícones da lista de ações (`imgs/action/*`, `imgs/plugin/category.svg`) brancos
+      `#FFFFFF` em fundo transparente, sem cor e sem fundo — hoje são âmbar e azul
+- [ ] Arte da listagem nos tamanhos da loja: ícone do app 288×288, thumbnail e de 3 a 10
+      imagens de galeria em 1920×960, tudo PNG. O `npm run promo` já desenha a partir das
+      teclas reais; falta acrescentar esses tamanhos
+- [ ] Descrição de 250 a 1.500 caracteres em inglês, os primeiros 250 em texto corrido
+- [ ] Um vídeo de demonstração: o revisor não tem aparelhos Tuya, então um vídeo de teclas
+      reais comandando aparelhos reais é a única prova que ele terá. MP4, 1920×1080, menos
+      de 50 MB
+- [ ] Primeira submissão com *Publish after review* desmarcado; baixar o build protegido da
+      aba Versions e instalá-lo antes de publicar

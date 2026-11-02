@@ -9,13 +9,23 @@ Tua Casa itself is **GPL-3.0-or-later** ([LICENSE](LICENSE)). Every dependency b
 compatible with that, including the two that ship under a choice of licences — the choice
 this project makes is stated in the table.
 
-Versions are the ones resolved at the time of writing. To re-check after an upgrade, see
+Versions are the ones inside the 1.0.0 release package. To re-check after an upgrade, see
 [Re-checking](#re-checking) at the bottom.
 
-## Runtime — Python worker
+## Runtime — Python and the worker's packages
 
-Installed by `pip install -r requirements.txt`. Not redistributed by this repository: each
-user installs them from PyPI.
+The release package (`.streamDeckPlugin`) **redistributes** all of these: `npm run pack`
+puts the Windows embeddable Python in the plugin's `python/` folder and installs
+`requirements.txt` into it, so whoever installs the plugin needs no Python of their own. The
+licence texts travel with them, inside the package: `python/LICENSE.txt` and every
+`python/Lib/site-packages/*.dist-info/`.
+
+| Component | Version | Licence | Author |
+|---|---|---|---|
+| [CPython](https://www.python.org/) (Windows embeddable package) | 3.14.6 | PSF-2.0 | Python Software Foundation |
+
+CPython's `LICENSE.txt` also covers what it ships inside itself — OpenSSL (Apache-2.0),
+libffi, bzip2, zlib, SQLite and the rest — each with its own notice in that file.
 
 | Package | Version | Licence | Author |
 |---|---|---|---|
@@ -27,16 +37,16 @@ Pulled in transitively by those three:
 
 | Package | Version | Licence | Note |
 |---|---|---|---|
-| certifi | 2026.6.17 | MPL-2.0 | weak copyleft, per file; GPL-compatible via its secondary-licence clause |
-| cffi | 2.0.0 | MIT | |
-| charset-normalizer | 3.4.7 | MIT | |
+| certifi | 2026.10.23 | MPL-2.0 | weak copyleft, per file; GPL-compatible via its secondary-licence clause. Shipped as unmodified source, which is what MPL asks |
+| cffi | 2.1.1 | MIT | |
+| charset-normalizer | 3.5.2 | MIT | |
 | colorama | 0.4.6 | BSD-3-Clause | |
-| cryptography | 50.0.1 | Apache-2.0 **OR** BSD-3-Clause | **this project takes Apache-2.0** |
-| idna | 3.18 | BSD-3-Clause | |
+| cryptography | 50.0.2 | Apache-2.0 **OR** BSD-3-Clause | **this project takes Apache-2.0**; the wheel carries its own OpenSSL |
+| idna | 3.20 | BSD-3-Clause | |
 | paho-mqtt | 2.1.0 | EPL-2.0 **OR** BSD-3-Clause | **this project takes BSD-3-Clause** — see below |
-| pycparser | 3.0 | BSD-3-Clause | |
+| pycparser | 3.12 | BSD-3-Clause | |
 | requests | 2.34.2 | Apache-2.0 | |
-| urllib3 | 2.7.0 | MIT | |
+| urllib3 | 2.8.0 | MIT | |
 
 > **Why the choice on `paho-mqtt` matters.** EPL-2.0 and the GPL are not compatible. The
 > package is offered under either licence, so this project takes the BSD-3-Clause arm and
@@ -45,8 +55,9 @@ Pulled in transitively by those three:
 
 ## Runtime — Stream Deck plugin
 
-Installed by `npm install`, and bundled into `bin/plugin.js` by `npm run build`. These are
-the ones that would travel inside a packaged `.streamDeckPlugin` file.
+Installed by `npm install`, and bundled into `bin/plugin.js` by `npm run build`. The build
+also writes their licence texts to `THIRD-PARTY-NOTICES.txt`, next to `manifest.json`, from
+what esbuild actually bundled — so a new dependency cannot be left out of it.
 
 | Package | Version | Licence | Author |
 |---|---|---|---|
@@ -67,6 +78,7 @@ shipped file.
 
 | Package | Version | Licence |
 |---|---|---|
+| @elgato/cli | 1.10.4 | MIT |
 | esbuild + @esbuild/win32-x64 | 0.24.2 | MIT |
 | typescript + @typescript/typescript-win32-x64 | 7.0.2 | Apache-2.0 |
 | @types/node | 26.4.0 | MIT |
@@ -121,6 +133,7 @@ Why each of these can sit inside a GPL-3.0-or-later project:
 |---|---|---|
 | MIT, BSD-3-Clause, ISC | yes | permissive; the GPL's terms may be layered on top |
 | Apache-2.0 | yes, with GPLv3+ | its patent clause is compatible with v3, **not** with v2 |
+| PSF-2.0 | yes | permissive; the FSF lists it as GPL-compatible |
 | MPL-2.0 | yes | §3.3 explicitly allows combination with GPL |
 | EPL-2.0 | **no** | avoided by taking the BSD arm of `paho-mqtt` |
 

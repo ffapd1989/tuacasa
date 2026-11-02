@@ -9,13 +9,23 @@ O Tua Casa é **GPL-3.0-or-later** ([LICENSE](LICENSE)). Toda dependência abaix
 compatível com isso, inclusive as duas que vêm com licença dupla — a escolha que este
 projeto faz está declarada na tabela.
 
-As versões são as resolvidas no momento em que isto foi escrito. Para reconferir depois de
+As versões são as que estão dentro do pacote da versão 1.0.0. Para reconferir depois de
 uma atualização, veja [Reconferindo](#reconferindo) no fim.
 
-## Execução — worker em Python
+## Execução — o Python e os pacotes do worker
 
-Instaladas por `pip install -r requirements.txt`. Não são redistribuídas por este
-repositório: cada usuário as instala do PyPI.
+O pacote de distribuição (`.streamDeckPlugin`) **redistribui** tudo isto: o `npm run pack`
+põe o Python embutível do Windows na pasta `python/` do plugin e instala o
+`requirements.txt` dentro dele, então quem instala o plugin não precisa de Python próprio. Os
+textos das licenças vão junto, dentro do pacote: `python/LICENSE.txt` e cada
+`python/Lib/site-packages/*.dist-info/`.
+
+| Componente | Versão | Licença | Autoria |
+|---|---|---|---|
+| [CPython](https://www.python.org/) (pacote embutível do Windows) | 3.14.6 | PSF-2.0 | Python Software Foundation |
+
+O `LICENSE.txt` do CPython cobre também o que ele traz dentro de si — OpenSSL (Apache-2.0),
+libffi, bzip2, zlib, SQLite e o resto —, cada um com o seu aviso naquele arquivo.
 
 | Pacote | Versão | Licença | Autor |
 |---|---|---|---|
@@ -27,16 +37,16 @@ Trazidas transitivamente por essas três:
 
 | Pacote | Versão | Licença | Observação |
 |---|---|---|---|
-| certifi | 2026.6.17 | MPL-2.0 | copyleft fraco, por arquivo; compatível com GPL pela cláusula de licenças secundárias |
-| cffi | 2.0.0 | MIT | |
-| charset-normalizer | 3.4.7 | MIT | |
+| certifi | 2026.10.23 | MPL-2.0 | copyleft fraco, por arquivo; compatível com GPL pela cláusula de licenças secundárias. Vai como fonte sem modificação, que é o que a MPL pede |
+| cffi | 2.1.1 | MIT | |
+| charset-normalizer | 3.5.2 | MIT | |
 | colorama | 0.4.6 | BSD-3-Clause | |
-| cryptography | 50.0.1 | Apache-2.0 **OU** BSD-3-Clause | **este projeto adota a Apache-2.0** |
-| idna | 3.18 | BSD-3-Clause | |
+| cryptography | 50.0.2 | Apache-2.0 **OU** BSD-3-Clause | **este projeto adota a Apache-2.0**; o wheel traz o próprio OpenSSL |
+| idna | 3.20 | BSD-3-Clause | |
 | paho-mqtt | 2.1.0 | EPL-2.0 **OU** BSD-3-Clause | **este projeto adota a BSD-3-Clause** — veja abaixo |
-| pycparser | 3.0 | BSD-3-Clause | |
+| pycparser | 3.12 | BSD-3-Clause | |
 | requests | 2.34.2 | Apache-2.0 | |
-| urllib3 | 2.7.0 | MIT | |
+| urllib3 | 2.8.0 | MIT | |
 
 > **Por que a escolha no `paho-mqtt` importa.** EPL-2.0 e GPL não são compatíveis. O
 > pacote é oferecido sob qualquer uma das duas, então este projeto adota o braço
@@ -45,8 +55,10 @@ Trazidas transitivamente por essas três:
 
 ## Execução — plugin do Stream Deck
 
-Instaladas por `npm install` e empacotadas em `bin/plugin.js` pelo `npm run build`. São as
-que viajariam dentro de um arquivo `.streamDeckPlugin`.
+Instaladas por `npm install` e empacotadas em `bin/plugin.js` pelo `npm run build`. O build
+também grava os textos das licenças delas no `THIRD-PARTY-NOTICES.txt`, ao lado do
+`manifest.json`, a partir do que o esbuild de fato empacotou — então uma dependência nova não
+tem como ficar de fora.
 
 | Pacote | Versão | Licença | Autor |
 |---|---|---|---|
@@ -67,6 +79,7 @@ entregue.
 
 | Pacote | Versão | Licença |
 |---|---|---|
+| @elgato/cli | 1.10.4 | MIT |
 | esbuild + @esbuild/win32-x64 | 0.24.2 | MIT |
 | typescript + @typescript/typescript-win32-x64 | 7.0.2 | Apache-2.0 |
 | @types/node | 26.4.0 | MIT |
@@ -120,6 +133,7 @@ Por que cada uma delas pode ficar dentro de um projeto GPL-3.0-or-later:
 |---|---|---|
 | MIT, BSD-3-Clause, ISC | sim | permissivas; os termos da GPL podem ser sobrepostos |
 | Apache-2.0 | sim, com GPLv3+ | a cláusula de patentes é compatível com a v3, **não** com a v2 |
+| PSF-2.0 | sim | permissiva; a FSF a lista como compatível com a GPL |
 | MPL-2.0 | sim | o §3.3 permite explicitamente a combinação com a GPL |
 | EPL-2.0 | **não** | evitada adotando o braço BSD do `paho-mqtt` |
 

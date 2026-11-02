@@ -16,8 +16,7 @@ Leva cerca de um minuto. Se você já sabe o que é um *código de usuário*, pu
 - O aplicativo **Smart Life** ou **Tuya Smart**, com os aparelhos já funcionando nele.
   Qualquer um dos dois serve — são o mesmo serviço com dois nomes.
 - O PC e os aparelhos na **mesma rede**.
-- Python 3.10+ no PATH e o plugin instalado. Veja o
-  [LEIA-ME](../README.pt-BR.md#instalar).
+- O plugin instalado. Veja o [LEIA-ME](../README.pt-BR.md#instalar).
 
 > **Por que um código e não a senha?** O Tua Casa nunca vê a sua senha. O código de
 > usuário apenas *nomeia* a sua conta; o QR é o que prova que você estava neste PC e

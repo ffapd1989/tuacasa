@@ -7,7 +7,9 @@
 ![Stream Deck](https://img.shields.io/badge/Stream%20Deck-6.5%2B-101014)
 ![Interface](https://img.shields.io/badge/interface-pt%20%C2%B7%20en%20%C2%B7%20es-2E7D74)
 ![Works with](https://img.shields.io/badge/works%20with-Tuya%C2%AE%20%C2%B7%20Smart%20Life%C2%AE-5A6B7C)
-![Marketplace](https://img.shields.io/badge/Elgato%20Marketplace-not%20there%20yet-8a8a90)
+[![Download](https://img.shields.io/github/v/release/ffapd1989/tuacasa?label=download&color=ffb02e)](https://github.com/ffapd1989/tuacasa/releases/latest)
+
+![Tua Casa: your home on the Stream Deck](docs/img/social-preview-en.png)
 
 **Works with Tuya®-compatible devices** — the sockets, wall switches, bulbs and curtain
 motors you already run from the **Smart Life®** or **Tuya Smart®** app. Tuya is the
@@ -62,23 +64,17 @@ actually is.
 ## Requirements
 
 - Windows 10/11 and Stream Deck software 6.5+
-- **Python 3.10+** on the PATH (the plugin runs a small local worker)
 - Smart-home devices already working in your phone app
 - The PC on the **same network** as the devices
 
-```powershell
-pip install -r requirements.txt
-```
+Nothing else. The plugin carries its own Python inside, so there is nothing to install
+first and nothing to type in a terminal.
 
 ## Install
 
-```powershell
-cd streamdeck-plugin
-npm install
-npm run build
-streamdeck link "com.felipedrummond.tuacasa.sdPlugin"
-streamdeck restart com.felipedrummond.tuacasa
-```
+1. Download `com.felipedrummond.tuacasa.streamDeckPlugin` from the
+   [latest release](https://github.com/ffapd1989/tuacasa/releases/latest).
+2. Double-click it. The Stream Deck app asks to install it; say yes.
 
 Then drag any **Tua Casa** action onto a key and follow the panel: it asks for your **user
 code** (in the app: *Me → ⚙ → Account and Security → User Code*), shows a QR code, and you scan
@@ -130,6 +126,12 @@ list falls back to `Device — 1`, `Device — 2`. Restart the plugin after edit
 
 ## Troubleshooting
 
+Start with **Activity** at the bottom of the panel: it shows every press, every answer and
+every failure as it happens, with no log file to open.
+
+If you cloned the repository and have Python, there is also a probe that talks to the devices
+without the plugin:
+
 ```powershell
 python tools/probe.py list          # inventory and reachability
 python tools/probe.py read "<name>" # raw state, with timing
@@ -140,7 +142,7 @@ A device that answers `scan` but fails `read` almost always has a **stale local 
 re-pair it in the app and press *Rescan network* in the panel. Error `914` means the key or
 protocol version was rejected; `901`/`905` mean the packet never got there.
 
-Plugin log: `com.felipedrummond.tuacasa.sdPlugin/logs/`.
+Plugin log: `%APPDATA%\Elgato\StreamDeck\Plugins\com.felipedrummond.tuacasa.sdPlugin\logs\`.
 
 Known limits and what is not supported: [LIMITS.md](LIMITS.md).
 
@@ -155,7 +157,8 @@ Known limits and what is not supported: [LIMITS.md](LIMITS.md).
 | [THIRD-PARTY.md](THIRD-PARTY.md) | Every dependency, with version, licence and author |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to get it running, and the house rules |
 | [SECURITY.md](SECURITY.md) | Reporting a vulnerability, and what is in scope |
-| [docs/PUBLISHING.md](docs/PUBLISHING.md) | What still stands between this and a store release |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | Why it ships on GitHub and not on the Elgato Marketplace, and what a store release would take |
+| [docs/LAUNCH.md](docs/LAUNCH.md) | The launch kit: repository settings, release notes, announcement posts, demo shot list |
 
 ## Acknowledgements
 

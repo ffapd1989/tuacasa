@@ -96,5 +96,5 @@ drops the socket timeout to 0.4s just for that read.
 
 ## Platform
 
-Windows only for now. Nothing in the design is Windows-specific except the Python launcher
-choice and the state directory, but nothing has been tested elsewhere.
+Windows only for now. Nothing in the design is Windows-specific except the bundled Python
+runtime and the state directory, but nothing has been tested elsewhere.

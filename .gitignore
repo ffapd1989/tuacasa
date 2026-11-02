@@ -15,6 +15,10 @@ streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/logs/
 # noise nobody can review.
 node_modules/
 streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/bin/
+streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/python/
+streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/THIRD-PARTY-NOTICES.txt
+dist/
+__pycache__/
 
 # Contact sheets: `npm run keys` regenerates all three.
 docs/keys-*.html

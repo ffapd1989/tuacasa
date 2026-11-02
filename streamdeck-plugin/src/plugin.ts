@@ -38,6 +38,7 @@ import {
 
 const PLUGIN_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_PATH = join(PLUGIN_ROOT, "worker", "tuacasa.py");
+const BUNDLED_PYTHON = join(PLUGIN_ROOT, "python", "python.exe");
 const RESPAWN_MS = 4000;
 const HOLD_MS = 800;
 
@@ -248,6 +249,7 @@ class Worker {
 }
 
 function pythonRuntime(): [string, string[]] {
+  if (existsSync(BUNDLED_PYTHON)) return [BUNDLED_PYTHON, []];
   // The `py` launcher is the reliable path on Windows; python3 covers the rest.
   return process.platform === "win32" ? ["py", ["-3"]] : ["python3", []];
 }

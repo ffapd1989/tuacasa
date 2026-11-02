@@ -97,5 +97,5 @@ worker baixa o timeout do socket para 0,4s só para essa leitura.
 
 ## Plataforma
 
-Só Windows, por ora. Nada no desenho é específico de Windows além da escolha do lançador do
-Python e do diretório de estado, mas nada foi testado fora dele.
+Só Windows, por ora. Nada no desenho é específico de Windows além do Python embutido
+e do diretório de estado, mas nada foi testado fora dele.

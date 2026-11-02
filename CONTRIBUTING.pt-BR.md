@@ -8,14 +8,38 @@ que a mesma issue não seja aberta duas vezes.
 
 ## Colocando para rodar
 
+Você precisa de Windows, Node 20+, Python 3.14 (`py -3.14`) e o app do Stream Deck.
+
 ```powershell
 pip install -r requirements.txt
 cd streamdeck-plugin
 npm install
 npm run build
-streamdeck link "com.felipedrummond.tuacasa.sdPlugin"
-streamdeck restart com.felipedrummond.tuacasa
+npx streamdeck link "com.felipedrummond.tuacasa.sdPlugin"
+npx streamdeck restart com.felipedrummond.tuacasa
 ```
+
+Um plugin linkado roda o worker no seu próprio Python. Depois que o `npm run python` ou o
+`npm run pack` rodou, ele passa a usar o Python embutido em
+`com.felipedrummond.tuacasa.sdPlugin/python/` — apague essa pasta para voltar ao seu.
+
+## Gerando o pacote de distribuição
+
+```powershell
+cd streamdeck-plugin
+npx streamdeck stop com.felipedrummond.tuacasa    # só se estiver linkado: o Windows trava o python.exe em uso
+npm run pack
+npx streamdeck restart com.felipedrummond.tuacasa
+```
+
+Isso compila o bundle, baixa o Python embutível do Windows (versão fixa, conferida contra o
+SHA-256 publicado pelo python.org), instala o `requirements.txt` dentro dele, confere que todo
+pacote importa e grava `dist/com.felipedrummond.tuacasa.streamDeckPlugin`. É esse pacote que
+vai numa release do GitHub; tem cerca de 19 MB, quase tudo Python e `cryptography`. A CLI da
+Elgato deixa `*.log` de fora, então a pasta `logs/` nunca sai junto.
+
+O `npm run promo` redesenha os PNGs do ícone do plugin e os cartões de divulgação em
+`docs/img/social-preview-*.png` a partir das funções reais da tecla.
 
 Duas coisas que ajudam antes de mexer no plugin:
 

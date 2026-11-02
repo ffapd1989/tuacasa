@@ -16,8 +16,7 @@ It takes about a minute. If you already know what a *user code* is, skip to
 - The **Smart Life** or **Tuya Smart** app, with your devices already working in it.
   Either app works — they are the same service under two names.
 - The PC and the devices on the **same network**.
-- Python 3.10+ on the PATH, and the plugin installed. See the
-  [README](../README.md#install).
+- The plugin installed. See the [README](../README.md#install).
 
 > **Why a code and not a password?** Tua Casa never sees your password. The user code
 > only *names* your account; the QR code is what proves you sat at this PC and approved
