@@ -28,6 +28,7 @@ function screenshot(name, html, width, height, outFile) {
 const look = (icon, over = {}) => ({ ...PLAIN_LOOK, icon, ...over, label: { ...PLAIN_LABEL } });
 
 const pluginSvg = readFileSync(join(iconDir, "plugin.svg"), "utf8");
+const brandMarkSvg = readFileSync(join(pluginDir, "tools", "brand-mark.svg"), "utf8");
 const iconPage = (size) => `<!doctype html><style>html,body{margin:0;background:transparent}
     svg{display:block;width:${size}px;height:${size}px}</style>${pluginSvg}`;
 for (const [size, file] of [[256, "plugin.png"], [512, "plugin@2x.png"]]) {
@@ -96,7 +97,7 @@ for (const [locale, copy] of Object.entries(COPY)) {
     .deck img{width:96px;height:96px;border-radius:12px;display:block;background:#000}
   </style>
   <div class="copy">
-    <div class="brand"><img src="data:image/svg+xml;utf8,${encodeURIComponent(pluginSvg)}">Tua Casa</div>
+    <div class="brand"><img src="data:image/svg+xml;utf8,${encodeURIComponent(brandMarkSvg)}">Tua Casa</div>
     <h1>${copy.title}</h1>
     <p>${copy.body}</p>
     <div class="chips">${copy.chips.map((chip) => `<span>${chip}</span>`).join("")}</div>
