@@ -27,7 +27,7 @@ das mesmas funções que desenham a tecla física e das imagens do painel em
 O campo aceita Markdown. Entre 250 e 1.500 caracteres, em inglês; os primeiros 250 têm de
 ser texto sem formatação, porque viram o trecho que aparece na busca (as
 [diretrizes de produto](https://docs.elgato.com/guidelines/products/) da Elgato). O texto para
-colar é o bloco do [LISTING.md](LISTING.md#description) (1.434 caracteres, 1.454 se a loja
+colar é o bloco do [LISTING.md](LISTING.md#description) (1.469 caracteres, 1.489 se a loja
 contar cada quebra de linha como dois). O que ele diz, em português:
 
 - O primeiro parágrafo, sem formatação, apresenta o plugin: luzes, tomadas, interruptores de
@@ -42,7 +42,9 @@ contar cada quebra de linha como dois). O que ele diz, em português:
   Assistant; se a Tuya mudá-la, o pareamento para até sair uma atualização, e os aparelhos da
   rede continuam funcionando. É o mesmo que o [LIMITS.pt-BR.md](../../LIMITS.pt-BR.md) diz.
 - Fecha dizendo que Tuya, Smart Life e Tuya Smart são marcas registradas dos respectivos
-  donos, que o plugin não tem vínculo com eles, e com o link do repositório.
+  donos e que o plugin não tem vínculo com eles; que o código é aberto, sob GPL-3.0, e se
+  apoia em outras bibliotecas abertas, todas creditadas no README; e com o link do
+  repositório.
 
 ## Tags
 

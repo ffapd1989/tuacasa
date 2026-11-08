@@ -27,21 +27,21 @@ the same functions that draw the physical key and from the panel pictures in
 The field takes Markdown. Between 250 and 1,500 characters, in English; the first 250 must
 be unformatted, because they become the search snippet (Elgato's
 [product guidelines](https://docs.elgato.com/guidelines/products/)). Paste everything inside
-the block (1,434 characters).
+the block (1,469 characters).
 
 ```markdown
 Control your smart home from the Stream Deck. Lights, sockets, wall switches, blinds and scenes from devices on the Tuya® or Smart Life® platform, the ones already in your Smart Life or Tuya Smart® app, go on your keys, answering in about 100 ms over your own network.
 
 **What it does**
 - One key per output: a 4-gang wall switch becomes four keys
-- Live state on every key, in sync with the phone, with watts where the socket measures them
+- Live state on every key, in sync with the phone, with watts where measured
 - Blinds open, close, stop or nudge, and the key draws where the blind is
 - Scenes from your app, or recorded on the Deck
 - Hold **All off** to switch off everything at once
 - Cloud fallback for devices that refuse local control
 - 14 icons, 9 colours, your own label; panel in English, Portuguese and Spanish
 
-**Setup, all inside the panel**
+**Setup, inside the panel**
 1. Drag a Tua Casa action onto a key.
 2. Type your app's user code, then scan the QR code with the app.
 3. Pick a device. Python is bundled: nothing else to install.
@@ -50,7 +50,7 @@ Control your smart home from the Stream Deck. Lights, sockets, wall switches, bl
 
 **Good to know:** pairing uses the app identity of Home Assistant's Tuya integration. If Tuya changes it, pairing stops until an update; devices on your network keep working.
 
-Tuya, Smart Life and Tuya Smart are registered trademarks of their respective owners; this plugin is not affiliated with them. Open source under GPL-3.0: https://github.com/ffapd1989/tuacasa
+Tuya, Smart Life and Tuya Smart are registered trademarks of their respective owners; this plugin is not affiliated with them. Open source under GPL-3.0, built on open-source libraries credited in the README: https://github.com/ffapd1989/tuacasa
 ```
 
 ## Tags
