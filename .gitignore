@@ -1,0 +1,31 @@
+# Nothing about a real house belongs in this repository. Keys, tokens and the
+# device inventory live in %LOCALAPPDATA%\streamdeck-tuacasa\ and never come
+# near it; these are the paths that would drag them in anyway.
+.local/
+devices.json
+tokens.json
+channel-names.json
+scenes.json
+
+# The Stream Deck writes plugin logs inside the linked folder. They carry
+# device names, addresses and machine details.
+streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/logs/
+
+# Build output: `npm run build` rebuilds it, and a stale bundle in a diff is
+# noise nobody can review.
+node_modules/
+streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/bin/
+streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/python/
+streamdeck-plugin/com.felipedrummond.tuacasa.sdPlugin/THIRD-PARTY-NOTICES.txt
+dist/
+__pycache__/
+
+# Contact sheets: `npm run keys` regenerates all three.
+docs/keys-*.html
+
+# Editor and OS litter
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+*.swp

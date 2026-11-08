@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 662" width="940" height="662" role="img" aria-label="Pareamento: onde cada passo acontece">
+<defs><marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5aa9e6"/></marker></defs>
+<rect width="940" height="662" rx="10" fill="#16181d"/>
+<text x="24" y="36" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="19" font-weight="600" fill="#e8eaed" text-anchor="start">Pareamento: onde cada passo acontece</text>
+<rect x="24" y="62" width="288" height="494" rx="8" fill="#1c1f26" stroke="#2a2e37"/>
+<text x="40" y="87" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#e8eaed" text-anchor="start">No seu celular</text>
+<text x="40" y="104" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#9aa0aa" text-anchor="start">Smart Life ou Tuya Smart</text>
+<rect x="332" y="62" width="288" height="494" rx="8" fill="#1c1f26" stroke="#2a2e37"/>
+<text x="348" y="87" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#e8eaed" text-anchor="start">No painel do Stream Deck</text>
+<text x="348" y="104" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#9aa0aa" text-anchor="start">dentro do próprio Stream Deck</text>
+<rect x="640" y="62" width="288" height="494" rx="8" fill="#1c1f26" stroke="#2a2e37"/>
+<text x="656" y="87" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#e8eaed" text-anchor="start">Worker + serviço da conta</text>
+<text x="656" y="104" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#9aa0aa" text-anchor="start">no seu PC, e o fabricante</text>
+<rect x="36" y="112" width="264" height="58" rx="6" fill="#22262e" stroke="#2a2e37"/>
+<circle cx="54" cy="131" r="10" fill="#ffb02e"/>
+<text x="54" y="135" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="700" fill="#16181d" text-anchor="middle">1</text>
+<text x="72" y="135" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">Eu → ⚙ → Conta e segurança</text>
+<text x="72" y="150" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">→ Código de usuário</text>
+<rect x="344" y="186" width="264" height="58" rx="6" fill="#22262e" stroke="#2a2e37"/>
+<circle cx="362" cy="205" r="10" fill="#ffb02e"/>
+<text x="362" y="209" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="700" fill="#16181d" text-anchor="middle">2</text>
+<text x="380" y="209" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">Digite o código e clique</text>
+<text x="380" y="224" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">em Conectar</text>
+<path d="M300 178 L344 178" stroke="#5aa9e6" stroke-width="1.6" marker-end="url(#tip)" stroke-dasharray="4 3"/>
+<rect x="652" y="260" width="264" height="58" rx="6" fill="#22262e" stroke="#2a2e37"/>
+<circle cx="670" cy="279" r="10" fill="#ffb02e"/>
+<text x="670" y="283" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="700" fill="#16181d" text-anchor="middle">3</text>
+<text x="688" y="283" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">Pede ao serviço um token</text>
+<text x="688" y="298" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">de login</text>
+<path d="M608 252 L652 252" stroke="#5aa9e6" stroke-width="1.6" marker-end="url(#tip)" stroke-dasharray="4 3"/>
+<rect x="344" y="334" width="264" height="58" rx="6" fill="#22262e" stroke="#2a2e37"/>
+<circle cx="362" cy="353" r="10" fill="#ffb02e"/>
+<text x="362" y="357" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="700" fill="#16181d" text-anchor="middle">4</text>
+<text x="380" y="357" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">Desenha o token como QR</text>
+<text x="380" y="372" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">na tela</text>
+<path d="M652 326 L608 326" stroke="#5aa9e6" stroke-width="1.6" marker-end="url(#tip)" stroke-dasharray="4 3"/>
+<rect x="36" y="408" width="264" height="58" rx="6" fill="#22262e" stroke="#2a2e37"/>
+<circle cx="54" cy="427" r="10" fill="#ffb02e"/>
+<text x="54" y="431" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="700" fill="#16181d" text-anchor="middle">5</text>
+<text x="72" y="431" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">Aponte o mesmo app para</text>
+<text x="72" y="446" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">o painel e aprove</text>
+<path d="M344 400 L300 400" stroke="#5aa9e6" stroke-width="1.6" marker-end="url(#tip)" stroke-dasharray="4 3"/>
+<rect x="652" y="482" width="264" height="58" rx="6" fill="#22262e" stroke="#2a2e37"/>
+<circle cx="670" cy="501" r="10" fill="#ffb02e"/>
+<text x="670" y="505" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="700" fill="#16181d" text-anchor="middle">6</text>
+<text x="688" y="505" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">Sessão gravada em disco,</text>
+<text x="688" y="520" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#e8eaed" text-anchor="start">rede varrida</text>
+<path d="M300 474 L652 474" stroke="#5aa9e6" stroke-width="1.6" marker-end="url(#tip)" stroke-dasharray="4 3"/>
+<rect x="24" y="578" width="892" height="30" rx="6" fill="#1b2a22" stroke="#7fd1a6" stroke-opacity="0.4"/>
+<text x="38" y="597" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="12" font-weight="400" fill="#7fd1a6" text-anchor="start">Resultado: a lista de aparelhos aparece no painel. Chaves e tokens ficam em %LOCALAPPDATA%\streamdeck-tuacasa\.</text>
+<text x="24" y="628" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#9aa0aa" text-anchor="start">Nada aqui pede sua senha, e não existe conta de desenvolvedor no caminho. O código de usuário identifica a conta; o QR</text>
+<text x="24" y="642" font-family="Segoe UI, Ubuntu, system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#9aa0aa" text-anchor="start">prova que você autorizou este PC.</text>
+</svg>

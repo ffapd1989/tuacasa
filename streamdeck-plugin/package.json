@@ -1,0 +1,24 @@
+{
+  "name": "tuacasa-streamdeck",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Stream Deck plugin: control your smart home locally",
+  "scripts": {
+    "build": "node build.mjs",
+    "keys": "node --experimental-strip-types tools/render-keys.mjs",
+    "promo": "node --experimental-strip-types tools/render-promo.mjs",
+    "python": "node tools/bundle-python.mjs",
+    "pack": "npm run build && npm run python && streamdeck pack com.felipedrummond.tuacasa.sdPlugin --output ../dist --force"
+  },
+  "dependencies": {
+    "@elgato/streamdeck": "^3.0.4"
+  },
+  "devDependencies": {
+    "@elgato/cli": "^1.10.4",
+    "@types/node": "^26.1.1",
+    "esbuild": "^0.24.0",
+    "typescript": "^7.0.2"
+  },
+  "license": "GPL-3.0-or-later"
+}

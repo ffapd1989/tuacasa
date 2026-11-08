@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<!-- SPDX-FileCopyrightText: 2026 Felipe Drummond -->
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tua Casa</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    font-family: Segoe UI, system-ui, sans-serif;
+    font-size: 13px; color: #d8d8d8; background: #2d2d2d;
+    margin: 0; padding: 10px 12px 16px;
+  }
+  .row { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+  .row.top { align-items: flex-start; }
+  .row.top > label { padding-top: 5px; }
+  .row > label { flex: 0 0 88px; text-align: right; color: #9a9a9a; }
+  .row > label.inline { flex: 0 0 auto; text-align: left; display: flex;
+                        align-items: center; gap: 5px; }
+  select, input[type="text"], input[type="number"], textarea {
+    flex: 1; background: #3d3d3d; color: #e8e8e8;
+    border: 1px solid #4a4a4a; border-radius: 3px; padding: 4px 6px;
+    font-size: 13px; font-family: inherit; min-width: 0;
+  }
+  textarea { resize: vertical; line-height: 1.35; }
+  .stack { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .hint { color: #7a7a7a; font-size: 10.5px; }
+  input.narrow { flex: 0 0 54px; }
+  .icons { flex: 1; display: flex; flex-wrap: wrap; gap: 5px; }
+  .icons button { padding: 3px; line-height: 0; border-radius: 4px;
+                  background: #343434; border: 1px solid #464646; }
+  .icons button.on { border-color: #0078FF; background: #33465c; }
+  .icons img { width: 27px; height: 27px; display: block; }
+  .icons .auto { display: block; width: 27px; line-height: 27px; text-align: center;
+                 font-size: 10px; color: #c0c0c0; }
+  .tints { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tints button { width: 22px; height: 22px; padding: 0; border-radius: 11px;
+                  border: none; margin: 3px; }
+  /* Ring with a gap, so the mark shows on a pale swatch as well as a dark one. */
+  .tints button.on { box-shadow: 0 0 0 2px #2d2d2d, 0 0 0 4px #e8e8e8; }
+  .tints button.auto { background: #3d3d3d; color: #b0b0b0; font-size: 9px;
+                       border-radius: 12px; }
+  button {
+    background: #4a4a4a; color: #e8e8e8; border: 1px solid #5a5a5a;
+    border-radius: 3px; padding: 5px 11px; font-size: 12.5px; font-family: inherit;
+    cursor: pointer; white-space: nowrap;
+  }
+  button:hover { background: #565656; }
+  button.primary { background: #2f6fd0; border-color: #3a7ee0; }
+  button.primary:hover { background: #3a7ee0; }
+  .note {
+    color: #8a8a8a; font-size: 11px; line-height: 1.5;
+    margin: 10px 0 0; padding-top: 9px; border-top: 1px solid #3d3d3d;
+  }
+  .note code { color: #b0b0b0; }
+  .hidden { display: none; }
+  .card { background: #262626; border: 1px solid #3d3d3d; border-radius: 5px;
+          padding: 12px; margin-bottom: 10px; }
+  .card h2 { font-size: 13px; margin: 0 0 8px; color: #e8e8e8; font-weight: 600; }
+  .qr { background: #fff; padding: 10px; border-radius: 5px; line-height: 0;
+        display: inline-block; margin: 4px 0 8px; }
+  .steps { margin: 0 0 8px; padding-left: 18px; line-height: 1.6; color: #b8b8b8; }
+  .status { font-size: 12px; color: #9a9a9a; min-height: 16px; }
+  .status.bad { color: #e07a5f; }
+  .status.good { color: #7fd1a6; }
+  .explain { background: #22282e; border-left: 3px solid #3a6ea5; border-radius: 3px;
+             padding: 9px 11px; margin: 0 0 10px; font-size: 11.5px; line-height: 1.6;
+             color: #b3bdc7; }
+  .explain b { color: #e8eaed; }
+  .explain ol { margin: 6px 0 0; padding-left: 16px; }
+  .explain li { margin-bottom: 4px; }
+  .linkish { background: none; border: none; color: #7aa7e0; padding: 0;
+             font-size: 11px; text-decoration: underline; }
+  .topbar { display: flex; align-items: center; gap: 5px; margin-bottom: 10px;
+            padding-bottom: 9px; border-bottom: 1px solid #3d3d3d; }
+  .topbar select { flex: 0 0 auto; width: auto; font-size: 11.5px; padding: 2px 5px; }
+  .topbar .globe { font-size: 14px; line-height: 1; opacity: .85; }
+  .topbar .uitag { font-size: 9.5px; font-weight: 600; letter-spacing: .06em;
+                   color: #8a8a8a; margin: 0 3px 0 -1px; }
+  .grow { flex: 1 1 auto; }
+  .topbar .brand { color: #6a6a6a; font-size: 11px; }
+  details#journalBox { margin-top: 12px; border-top: 1px solid #3d3d3d; padding-top: 8px; }
+  details#journalBox summary {
+    cursor: pointer; color: #8a8a8a; font-size: 11px; list-style: none;
+    display: flex; align-items: center; gap: 6px; user-select: none;
+  }
+  details#journalBox summary::before { content: "▸"; font-size: 9px; }
+  details#journalBox[open] summary::before { content: "▾"; }
+  details#journalBox summary:hover { color: #b0b0b0; }
+  .badge { background: #7a3b32; color: #f0d8d2; border-radius: 8px;
+           padding: 0 6px; font-size: 10px; line-height: 15px; }
+  .journal {
+    margin-top: 7px; max-height: 148px; overflow-y: auto; background: #1e1e1e;
+    border: 1px solid #383838; border-radius: 3px; padding: 6px 8px;
+    font-family: Consolas, monospace; font-size: 10.5px; line-height: 1.55; color: #9aa0a6;
+  }
+  .journal div { white-space: pre-wrap; word-break: break-word; }
+  .journal .bad { color: #e08b76; }
+  .journal .when { color: #5f6469; margin-right: 6px; }
+  .journal .empty { color: #6a6a6a; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- Globe + "UI" say that this selector is the INTERFACE language, and they say it
+     in any language — which is the point: someone who opened the panel in a language
+     they cannot read has to find this selector without reading anything around it.
+     For the same reason the options are invariant (Default, Português, English,
+     Español) and never translated. -->
+<div class="topbar">
+  <span class="globe">🌐</span><span class="uitag">UI</span>
+  <select id="uiLang">
+    <option value="auto">Default</option>
+    <option value="pt">Português</option>
+    <option value="en">English</option>
+    <option value="es">Español</option>
+  </select>
+  <span class="grow"></span>
+  <span class="brand">Tua Casa</span>
+</div>
+
+<!-- ── pairing: shown until the account is connected ───────────────── -->
+<div id="onboarding" class="card hidden">
+  <h2 id="t-connect">Connect your account</h2>
+  <div class="explain hidden" id="expiredWhy"></div>
+  <ol class="steps">
+    <li id="t-step1"></li>
+    <li id="t-step2"></li>
+    <li id="t-step3"></li>
+  </ol>
+  <div class="row">
+    <label for="userCode" id="t-usercode">User code</label>
+    <input type="text" id="userCode" maxlength="32" autocomplete="off">
+    <button id="btnPair" class="primary" data-t="connectbtn">Connect</button>
+  </div>
+  <div id="qrBox" class="hidden"><div class="qr" id="qr"></div></div>
+  <div class="status" id="pairStatus"></div>
+</div>
+
+<!-- ── key configuration ───────────────────────────────────────────── -->
+<div id="config" class="hidden">
+  <div class="row" id="rowLoad">
+    <label for="load" id="t-load">Device</label>
+    <select id="load"><option value="">—</option></select>
+  </div>
+
+  <div class="row hidden" id="rowSceneKind">
+    <label for="sceneKind" id="t-scenekind">Scene type</label>
+    <select id="sceneKind">
+      <option value="cloud" data-t="kindCloud">One I made in the app</option>
+      <option value="local" data-t="kindLocal">One I record here</option>
+    </select>
+  </div>
+
+  <div class="explain hidden" id="sceneHelp"></div>
+
+  <div class="row hidden" id="rowScene">
+    <label for="scene" id="t-scene">Which one</label>
+    <select id="scene"><option value="">—</option></select>
+  </div>
+
+  <div class="row hidden" id="rowNewScene">
+    <label for="newScene" id="t-newscene">Name it</label>
+    <input type="text" id="newScene" maxlength="24">
+    <button id="btnNewScene" class="primary" data-t="recordNow">Record what is on now</button>
+  </div>
+
+  <div class="row hidden" id="rowMove">
+    <label for="move" id="t-move">Action</label>
+    <select id="move">
+      <option value="open" data-t="open">Open</option>
+      <option value="close" data-t="close">Close</option>
+      <option value="stop" data-t="stop">Stop</option>
+      <option value="up" data-t="up">Open a little</option>
+      <option value="down" data-t="down">Close a little</option>
+    </select>
+  </div>
+
+  <div class="row hidden" id="rowStep">
+    <label for="step" id="t-step">Nudge by</label>
+    <input type="number" id="step" min="1" max="50" step="1" value="10">
+  </div>
+
+  <div class="row hidden" id="rowZero">
+    <label for="zeroIsOpen" id="t-zero">At 0% it is</label>
+    <select id="zeroIsOpen">
+      <option value="closed" data-t="zeroClosed">Closed (covering the window)</option>
+      <option value="open" data-t="zeroOpen">Open (window clear)</option>
+    </select>
+  </div>
+
+  <div class="explain hidden" id="blindHelp"></div>
+
+  <div class="explain hidden" id="allOffHelp"></div>
+
+  <div class="row top" id="rowIcon">
+    <label id="t-icon">Icon</label>
+    <div class="icons" id="iconGrid"></div>
+  </div>
+
+  <div class="row" id="rowTint">
+    <label id="t-tint">Colour</label>
+    <div class="tints" id="tintGrid"></div>
+  </div>
+
+  <div class="row top" id="rowLabel">
+    <label for="label" id="t-label">Label</label>
+    <div class="stack">
+      <textarea id="label" rows="2" maxlength="60"></textarea>
+      <span class="hint" id="t-labelhint"></span>
+    </div>
+  </div>
+
+  <div class="row" id="rowFont">
+    <label for="labelFont" id="t-font">Font</label>
+    <select id="labelFont"></select>
+    <input type="number" id="labelSize" class="narrow" min="6" max="20" step="1" value="10">
+  </div>
+
+  <div class="row" id="rowLabelCase">
+    <label for="labelCase" id="t-letters">Case</label>
+    <select id="labelCase">
+      <option value="as" data-t="caseAs">As typed</option>
+      <option value="upper" data-t="caseUpper">UPPERCASE</option>
+      <option value="lower" data-t="caseLower">lowercase</option>
+    </select>
+    <label class="inline"><input type="checkbox" id="labelBold"><b id="t-bold">Bold</b></label>
+  </div>
+
+  <div class="row hidden" id="rowLevel">
+    <label for="showLevel" id="t-level">Percentage</label>
+    <div style="flex:1; display:flex; align-items:center; gap:6px;">
+      <input type="checkbox" id="showLevel">
+      <span style="color:#9a9a9a" id="t-levelhint">show the number on the key</span>
+    </div>
+  </div>
+
+  <div class="row" id="rowPower">
+    <label for="showPower" id="t-power">Power</label>
+    <div style="flex:1; display:flex; align-items:center; gap:6px;">
+      <input type="checkbox" id="showPower">
+      <span style="color:#9a9a9a" id="t-powerhint">show watts on the key</span>
+    </div>
+  </div>
+
+  <div class="row" style="justify-content:flex-end; gap:6px;">
+    <button id="btnRescan" data-t="rescan">Rescan network</button>
+    <button id="btnForget" class="linkish" data-t="forget">Disconnect account</button>
+  </div>
+</div>
+
+<p class="note" id="note"></p>
+
+<details id="journalBox">
+  <summary><span id="t-activity">Activity</span><span class="badge hidden" id="journalBadge"></span>
+    <span class="grow"></span>
+    <button class="linkish" id="btnClearLog" data-t="clearlog">Clear</button></summary>
+  <div class="journal" id="journal"></div>
+</details>
+
+
+<script>
+"use strict";
+// Property Inspector — classic Stream Deck protocol (local WebSocket, no CDN).
+// Pairing happens here so nobody needs a terminal: the worker sends the QR as a
+// matrix of 0/1 and we draw it as plain SVG.
+
+const I18N = {
+  en: {
+    language: "Language", auto: "Follow Stream Deck",
+    connect: "Connect your account", connectbtn: "Connect",
+    expired: "Your account session expired",
+    expiredWhy: "Tuya ends the session when this computer stays off for a long time — in practice, " +
+               "a day or more. Devices on your network keep working; the ones marked ☁ and the " +
+               "scenes from the app come back once you connect again. <b>Nothing you set up is lost.</b>",
+    step1: "In the Smart Life app, open <b>Me → ⚙ → Account and Security → User Code</b>.",
+    step2: "Type that code below and press Connect.",
+    step3: "A QR code appears here. Scan it with the same app to authorise.",
+    userCodePlaceholder: "the code from the app",
+    usercode: "User code", load: "Device", scene: "Which one", scenekind: "Scene type",
+    newscene: "Name it", recordNow: "Record what is on now",
+    kindCloud: "One I made in the app", kindLocal: "One I record here",
+    move: "Action", step: "Nudge by", label: "Label", power: "Power",
+    labelPlaceholder: "(uses the name above)",
+    tint: "Colour", icon: "Icon", iconAuto: "match the device", tintAuto: "the colour this action was born with",
+    labelhint: "Enter starts a new line; a long name wraps on its own.",
+    font: "Font", letters: "Case", bold: "Bold",
+    caseAs: "As typed", caseUpper: "UPPERCASE", caseLower: "lowercase",
+    newScenePlaceholder: "e.g. Movie night",
+    powerhint: "show watts on the key", rescan: "Rescan network",
+    level: "Percentage", levelhint: "show the number on the key",
+    forget: "Disconnect account",
+    activity: "Activity", journalEmpty: "nothing yet", clearlog: "Clear",
+    open: "Open", close: "Close", stop: "Stop", up: "Open a little", down: "Close a little",
+    zero: "At 0% it is", zeroClosed: "Closed (covering the window)",
+    zeroOpen: "Open (window clear)",
+    helpBlind: "The key shows <b>how much window is covered</b>: the blind hangs down to where it really is, with the position written over it — a number, or the word <b>open</b> / <b>closed</b> at the extremes. You can switch that writing off below and leave the drawing to say it. Motors count either way and the API does not say which — if the key reads backwards, flip the setting above.",
+    waiting: "Waiting for you to scan…", scanning: "Scanning your network…",
+    reading: "Fetching your devices…", ok: "Connected.", nothing: "— nothing found —",
+    cloudNote: "This device (marked ☁) answers <b>through the cloud</b>, because it refuses local " +
+               "connections. Around 250 ms instead of 100 ms.",
+    lanNote: "Commanded <b>directly on your network</b> (~100 ms), never leaving the house.",
+    pickNote: "Each gang of a multi-gang wall switch appears as its own entry, so one Deck key drives one wall key.",
+    helpCloud: "Runs a scene <b>exactly as you built it in the app</b>. This key only triggers " +
+               "it — to change what the scene does, edit it in the app and press Rescan.",
+    helpLocalNew: "A scene of your own is a <b>photograph of the lights</b>:" +
+               "<ol><li>Leave every light the way you want it.</li>" +
+               "<li>Give the scene a name and press <b>Record what is on now</b>.</li>" +
+               "<li>From then on, <b>tapping</b> the key puts everything back to that.</li>" +
+               "<li><b>Holding</b> the key re-photographs it, replacing what was saved.</li></ol>",
+    helpLocalPicked: "<b>Tapping</b> the key restores this photograph. <b>Holding</b> it " +
+               "replaces the photograph with whatever is on right now.",
+    helpAllOff: "This key switches off <b>everything it can reach</b>." +
+               "<ol><li><b>Hold</b> the key for about a second to fire it.</li>" +
+               "<li>A short tap does nothing on purpose, so a stray press cannot black out " +
+               "the house.</li></ol>",
+  },
+  pt: {
+    language: "Idioma", auto: "Seguir o Stream Deck",
+    connect: "Conecte sua conta", connectbtn: "Conectar",
+    expired: "A sessão da conta expirou",
+    expiredWhy: "A Tuya encerra a sessão quando o computador fica desligado por muito tempo — na " +
+               "prática, um dia ou mais. Os aparelhos da sua rede continuam funcionando; os marcados " +
+               "com ☁ e as cenas do app voltam quando você conectar de novo. <b>Nada do que está " +
+               "configurado se perde.</b>",
+    step1: "No app Smart Life, abra <b>Eu → ⚙ → Conta e segurança → Código de usuário</b>.",
+    step2: "Digite esse código abaixo e aperte Conectar.",
+    step3: "Um QR aparece aqui. Escaneie com o mesmo app para autorizar.",
+    userCodePlaceholder: "o código que está no app",
+    usercode: "Código", load: "Dispositivo", scene: "Qual delas", scenekind: "Tipo de cena",
+    newscene: "Dê um nome", recordNow: "Gravar como está agora",
+    kindCloud: "Uma que eu fiz no app", kindLocal: "Uma que eu gravo aqui",
+    move: "Ação", step: "Mover", label: "Rótulo", power: "Consumo",
+    labelPlaceholder: "(usa o nome acima)",
+    tint: "Cor", icon: "Ícone", iconAuto: "conforme o aparelho", tintAuto: "a cor com que esta ação nasceu",
+    labelhint: "Enter quebra a linha; nome comprido quebra sozinho.",
+    font: "Fonte", letters: "Caixa", bold: "Negrito",
+    caseAs: "Como digitei", caseUpper: "MAIÚSCULAS", caseLower: "minúsculas",
+    newScenePlaceholder: "ex.: Noite de filme",
+    powerhint: "mostrar watts na tecla", rescan: "Reescanear rede",
+    level: "Porcentagem", levelhint: "mostrar o número na tecla",
+    forget: "Desconectar conta",
+    activity: "Atividade", journalEmpty: "nada ainda", clearlog: "Limpar",
+    open: "Abrir", close: "Fechar", stop: "Parar", up: "Abrir um pouco", down: "Fechar um pouco",
+    zero: "Em 0% ela está", zeroClosed: "Fechada (tapando a janela)",
+    zeroOpen: "Aberta (janela livre)",
+    helpBlind: "A tecla mostra <b>o quanto a janela está tapada</b>: a persiana desce no desenho até onde ela realmente está, com a posição escrita por cima — um número, ou a palavra <b>aberta</b> / <b>fechada</b> nos extremos. Você pode desligar essa escrita abaixo e deixar o desenho falar. Os motores contam de um jeito ou de outro e a API não diz qual — se a tecla mostrar ao contrário, inverta a opção acima.",
+    waiting: "Esperando você escanear…", scanning: "Varrendo sua rede…",
+    reading: "Buscando seus aparelhos…", ok: "Conectado.", nothing: "— nada encontrado —",
+    cloudNote: "Este dispositivo (marcado com ☁) responde <b>pela nuvem</b>, porque não aceita " +
+               "conexão local. Fica em torno de 250 ms em vez de 100 ms.",
+    lanNote: "Comandada <b>direto na sua rede</b> (~100 ms), sem sair de casa.",
+    pickNote: "Cada tecla de um interruptor de várias vias aparece separadamente, então uma tecla do Deck comanda uma tecla da parede.",
+    helpCloud: "Roda uma cena <b>exatamente como você a montou no app</b>. Esta tecla só " +
+               "dispara — para mudar o que a cena faz, edite no app e aperte Reescanear.",
+    helpLocalNew: "Uma cena sua é uma <b>fotografia das luzes</b>:" +
+               "<ol><li>Deixe cada luz do jeito que você quer.</li>" +
+               "<li>Dê um nome à cena e aperte <b>Gravar como está agora</b>.</li>" +
+               "<li>Daí em diante, <b>tocar</b> a tecla devolve tudo àquele estado.</li>" +
+               "<li><b>Segurar</b> a tecla refotografa, substituindo o que estava gravado.</li></ol>",
+    helpLocalPicked: "<b>Tocar</b> a tecla restaura esta fotografia. <b>Segurar</b> substitui " +
+               "a fotografia pelo que estiver aceso agora.",
+    helpAllOff: "Esta tecla apaga <b>tudo o que ela alcança</b>." +
+               "<ol><li><b>Segure</b> a tecla por cerca de um segundo para disparar.</li>" +
+               "<li>Um toque curto não faz nada, de propósito, para um esbarrão não apagar " +
+               "a casa inteira.</li></ol>",
+  },
+  es: {
+    language: "Idioma", auto: "Seguir al Stream Deck",
+    connect: "Conecta tu cuenta", connectbtn: "Conectar",
+    expired: "La sesión de tu cuenta expiró",
+    expiredWhy: "Tuya cierra la sesión cuando este ordenador pasa apagado mucho tiempo — en la " +
+               "práctica, un día o más. Los aparatos de tu red siguen funcionando; los marcados " +
+               "con ☁ y las escenas de la app vuelven cuando te conectes de nuevo. <b>No se pierde " +
+               "nada de lo que configuraste.</b>",
+    step1: "En la app Smart Life, abre <b>Yo → ⚙ → Cuenta y seguridad → Código de usuario</b>.",
+    step2: "Escribe ese código abajo y pulsa Conectar.",
+    step3: "Aparecerá un QR aquí. Escanéalo con la misma app para autorizar.",
+    userCodePlaceholder: "el código que está en la app",
+    usercode: "Código", load: "Dispositivo", scene: "Cuál", scenekind: "Tipo de escena",
+    newscene: "Ponle nombre", recordNow: "Grabar como está ahora",
+    kindCloud: "Una que hice en la app", kindLocal: "Una que grabo aquí",
+    move: "Acción", step: "Mover", label: "Etiqueta", power: "Consumo",
+    labelPlaceholder: "(usa el nombre de arriba)",
+    tint: "Color", icon: "Icono", iconAuto: "según el aparato", tintAuto: "el color con el que nació esta acción",
+    labelhint: "Enter salta de línea; un nombre largo se parte solo.",
+    font: "Fuente", letters: "Letras", bold: "Negrita",
+    caseAs: "Como lo escribí", caseUpper: "MAYÚSCULAS", caseLower: "minúsculas",
+    newScenePlaceholder: "ej.: Noche de cine",
+    powerhint: "mostrar vatios en la tecla", rescan: "Reescanear la red",
+    level: "Porcentaje", levelhint: "mostrar el número en la tecla",
+    forget: "Desconectar cuenta",
+    activity: "Actividad", journalEmpty: "nada aún", clearlog: "Limpiar",
+    open: "Abrir", close: "Cerrar", stop: "Parar", up: "Abrir un poco", down: "Cerrar un poco",
+    zero: "En 0% está", zeroClosed: "Cerrada (tapando la ventana)",
+    zeroOpen: "Abierta (ventana libre)",
+    helpBlind: "La tecla muestra <b>cuánto está tapada la ventana</b>: la persiana baja en el dibujo hasta donde realmente está, con la posición escrita encima — un número, o la palabra <b>abierta</b> / <b>cerrada</b> en los extremos. Puedes apagar esa escritura abajo y dejar que hable el dibujo. Los motores cuentan de una forma u otra y la API no dice cuál — si la tecla muestra al revés, invierte la opción de arriba.",
+    waiting: "Esperando que escanees…", scanning: "Explorando tu red…",
+    reading: "Buscando tus dispositivos…", ok: "Conectado.", nothing: "— nada encontrado —",
+    cloudNote: "Este dispositivo (marcado con ☁) responde <b>por la nube</b>, porque rechaza " +
+               "conexiones locales. Unos 250 ms en vez de 100 ms.",
+    lanNote: "Se controla <b>directamente en tu red</b> (~100 ms), sin salir de casa.",
+    pickNote: "Cada tecla de un interruptor de varias vías aparece por separado, así una tecla del Deck maneja una tecla de la pared.",
+    helpCloud: "Ejecuta una escena <b>tal como la creaste en la app</b>. Esta tecla solo la " +
+               "dispara — para cambiar lo que hace, edítala en la app y pulsa Reescanear.",
+    helpLocalNew: "Una escena tuya es una <b>fotografía de las luces</b>:" +
+               "<ol><li>Deja cada luz como la quieres.</li>" +
+               "<li>Ponle nombre y pulsa <b>Grabar como está ahora</b>.</li>" +
+               "<li>Desde entonces, <b>pulsar</b> la tecla lo devuelve todo a ese estado.</li>" +
+               "<li><b>Mantener</b> la tecla vuelve a fotografiar, reemplazando lo guardado.</li></ol>",
+    helpLocalPicked: "<b>Pulsar</b> la tecla restaura esta fotografía. <b>Mantenerla</b> " +
+               "reemplaza la fotografía por lo que esté encendido ahora.",
+    helpAllOff: "Esta tecla apaga <b>todo lo que alcanza</b>." +
+               "<ol><li><b>Mantén</b> la tecla cerca de un segundo para dispararla.</li>" +
+               "<li>Un toque corto no hace nada a propósito, para que un roce no apague " +
+               "toda la casa.</li></ol>",
+  },
+};
+
+let ws = null, ctx = null, actionId = "", settings = {}, global = {};
+let appLang = "en", lang = "en";
+let loads = [], scenes = [], localScenes = [], paired = false, journal = [];
+let sessionExpired = false;
+// The families the key can actually draw with arrive from the plugin, so this
+// panel never offers a font the rasteriser would silently swap out.
+let fonts = ["Segoe UI"];
+// Every icon arrives already drawn, by the same code that draws the key.
+let icons = [], tints = [];
+
+const T = () => I18N[lang] || I18N.en;
+const isBlind = () => actionId.endsWith(".blind");
+const isScene = () => actionId.endsWith(".scene");
+const isAllOff = () => actionId.endsWith(".alloff");
+const isSwitch = () => actionId.endsWith(".switch");
+const sceneKind = () => document.getElementById("sceneKind").value;
+
+function pickLang(tag) {
+  const t = String(tag || "").toLowerCase();
+  return t.startsWith("pt") ? "pt" : t.startsWith("es") ? "es" : "en";
+}
+
+function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
+  ctx = inUUID;
+  try {
+    const info = JSON.parse(inActionInfo);
+    settings = (info && info.payload && info.payload.settings) || {};
+    actionId = (info && info.action) || "";
+  } catch (e) { settings = {}; }
+  try { appLang = pickLang(JSON.parse(inInfo).application.language); } catch (e) { appLang = "en"; }
+  lang = appLang;
+
+  ws = new WebSocket("ws://127.0.0.1:" + inPort);
+  ws.addEventListener("open", function () {
+    ws.send(JSON.stringify({ event: inRegisterEvent, uuid: inUUID }));
+    ws.send(JSON.stringify({ event: "getGlobalSettings", context: ctx }));
+    buildFonts();
+    buildTints();
+    applyLanguage();
+    layoutForAction();
+    askCatalog();
+  });
+  ws.addEventListener("message", function (raw) {
+    let msg;
+    try { msg = JSON.parse(raw.data); } catch (e) { return; }
+    if (msg.event === "didReceiveSettings") {
+      settings = (msg.payload && msg.payload.settings) || {};
+      fillForm();
+    } else if (msg.event === "didReceiveGlobalSettings") {
+      global = (msg.payload && msg.payload.settings) || {};
+      lang = global.uiLang && global.uiLang !== "auto" ? global.uiLang : appLang;
+      document.getElementById("uiLang").value = global.uiLang || "auto";
+      applyLanguage();
+      buildLists();
+      fillForm();
+    } else if (msg.event === "sendToPropertyInspector") {
+      handleFromPlugin(msg.payload || {});
+    }
+  });
+}
+window.connectElgatoStreamDeckSocket = connectElgatoStreamDeckSocket;
+
+function toPlugin(payload) {
+  if (!ws || ws.readyState !== 1) return;
+  ws.send(JSON.stringify({ event: "sendToPlugin", context: ctx, action: actionId, payload }));
+}
+function save() {
+  if (!ws || ws.readyState !== 1) return;
+  ws.send(JSON.stringify({ event: "setSettings", context: ctx, payload: settings }));
+}
+function saveGlobal() {
+  if (!ws || ws.readyState !== 1) return;
+  ws.send(JSON.stringify({ event: "setGlobalSettings", context: ctx, payload: global }));
+}
+function askCatalog() {
+  toPlugin({ ask: "catalog" });
+  setTimeout(function () { if (!paired && !loads.length) askCatalog(); }, 2500);
+}
+
+function handleFromPlugin(payload) {
+  if (payload.evt === "catalog") {
+    loads = payload.loads || [];
+    scenes = payload.scenes || [];
+    localScenes = payload.localScenes || [];
+    fonts = payload.fonts && payload.fonts.length ? payload.fonts : fonts;
+    icons = payload.icons && payload.icons.length ? payload.icons : icons;
+    tints = payload.tints && payload.tints.length ? payload.tints : tints;
+    paired = !!payload.paired;
+    sessionExpired = !!payload.sessionExpired;
+    showRightPanel();
+    buildFonts();
+    buildIcons();
+    buildTints();
+    buildLists();
+    fillForm();
+  } else if (payload.evt === "qr") {
+    drawQr(payload.matrix || []);
+    setStatus(T().waiting, "");
+  } else if (payload.evt === "progress") {
+    setStatus(payload.step === "scanning" ? T().scanning
+            : payload.step === "reading" ? T().reading : T().waiting, "");
+  } else if (payload.evt === "journal") {
+    journal = payload.lines || [];
+    renderJournal();
+  } else if (payload.evt === "paired") {
+    if (payload.ok) {
+      paired = true;
+      sessionExpired = false;
+      document.getElementById("qrBox").classList.add("hidden");
+      setStatus(T().ok, "good");
+      askCatalog();
+    } else {
+      setStatus(payload.message || "failed", "bad");
+    }
+  }
+}
+
+/** Recent worker activity, so a timeout or a refused key is visible here
+ *  instead of only in a log file nobody opens. */
+function renderJournal() {
+  const box = document.getElementById("journal");
+  if (!box) return;
+  if (!journal.length) {
+    box.innerHTML = '<div class="empty">' + T().journalEmpty + "</div>";
+  } else {
+    box.innerHTML = journal.slice().reverse().map(function (line) {
+      const when = new Date(line.at).toLocaleTimeString();
+      return '<div class="' + (line.bad ? "bad" : "") + '"><span class="when">' +
+        when + "</span>" + String(line.text).replace(/[<&]/g, function (c) {
+          return c === "<" ? "&lt;" : "&amp;";
+        }) + "</div>";
+    }).join("");
+  }
+  const bad = journal.filter(function (l) { return l.bad; }).length;
+  const badge = document.getElementById("journalBadge");
+  badge.textContent = bad ? String(bad) : "";
+  badge.classList.toggle("hidden", !bad);
+}
+
+function setStatus(text, kind) {
+  const box = document.getElementById("pairStatus");
+  box.textContent = text;
+  box.className = "status" + (kind ? " " + kind : "");
+}
+
+function drawQr(matrix) {
+  const side = matrix.length;
+  if (!side) return;
+  let cells = "";
+  for (let y = 0; y < side; y++) {
+    for (let x = 0; x < side; x++) {
+      if (matrix[y][x]) cells += '<rect x="' + x + '" y="' + y + '" width="1" height="1"/>';
+    }
+  }
+  document.getElementById("qr").innerHTML =
+    '<svg width="190" height="190" viewBox="0 0 ' + side + ' ' + side + '" ' +
+    'shape-rendering="crispEdges"><rect width="' + side + '" height="' + side +
+    '" fill="#fff"/><g fill="#000">' + cells + "</g></svg>";
+  document.getElementById("qrBox").classList.remove("hidden");
+}
+
+function applyLanguage() {
+  const t = T();
+  const text = function (id, key, asHtml) {
+    const el = document.getElementById(id);
+    if (!el || !t[key]) return;
+    if (asHtml) el.innerHTML = t[key]; else el.textContent = t[key];
+  };
+  text("t-connect", sessionExpired ? "expired" : "connect"); text("expiredWhy", "expiredWhy", true);
+  text("t-step1", "step1", true);
+  text("t-step2", "step2", true); text("t-step3", "step3", true);
+  text("t-usercode", "usercode"); text("t-load", "load"); text("t-scene", "scene");
+  text("t-scenekind", "scenekind"); text("t-newscene", "newscene"); text("t-move", "move");
+  text("t-step", "step"); text("t-label", "label"); text("t-power", "power");
+  text("t-zero", "zero"); text("t-activity", "activity");
+  text("t-font", "font"); text("t-letters", "letters"); text("t-bold", "bold");
+  text("t-labelhint", "labelhint"); text("t-icon", "icon"); text("t-tint", "tint");
+  renderJournal();
+  text("t-powerhint", "powerhint");
+  text("t-level", "level"); text("t-levelhint", "levelhint");
+  document.querySelectorAll("[data-t]").forEach(function (el) {
+    const key = el.getAttribute("data-t");
+    if (t[key]) el.textContent = t[key];
+  });
+  document.getElementById("userCode").placeholder = t.userCodePlaceholder;
+  document.getElementById("label").placeholder = t.labelPlaceholder;
+  document.getElementById("newScene").placeholder = t.newScenePlaceholder;
+  updateHelp();
+  updateNote();
+}
+
+function showRightPanel() {
+  // An expired session keeps the configuration on screen: pairing again must not
+  // go through "Disconnect account", which deletes the inventory.
+  document.getElementById("onboarding").classList.toggle("hidden", paired && !sessionExpired);
+  document.getElementById("config").classList.toggle("hidden", !paired);
+  document.getElementById("expiredWhy").classList.toggle("hidden", !sessionExpired);
+  document.getElementById("t-connect").textContent = sessionExpired ? T().expired : T().connect;
+}
+
+function layoutForAction() {
+  const blind = isBlind(), scene = isScene(), allOff = isAllOff();
+  document.getElementById("rowLoad").classList.toggle("hidden", scene || allOff);
+  document.getElementById("rowSceneKind").classList.toggle("hidden", !scene);
+  document.getElementById("rowMove").classList.toggle("hidden", !blind);
+  document.getElementById("rowStep").classList.toggle("hidden", !blind);
+  document.getElementById("rowZero").classList.toggle("hidden", !blind);
+  document.getElementById("blindHelp").classList.toggle("hidden", !blind);
+  document.getElementById("rowPower").classList.toggle("hidden", !isSwitch());
+  document.getElementById("rowLevel").classList.toggle("hidden", !blind);
+  // The blind key draws its own gauge: the slats ARE the position.
+  document.getElementById("rowIcon").classList.toggle("hidden", blind);
+  document.getElementById("allOffHelp").classList.toggle("hidden", !allOff);
+  updateSceneRows();
+}
+
+/** Only the fields that belong to the chosen scene type stay on screen. */
+function updateSceneRows() {
+  const scene = isScene();
+  const local = scene && sceneKind() === "local";
+  document.getElementById("rowScene").classList.toggle("hidden",
+    !scene || (local && !localScenes.length));
+  document.getElementById("rowNewScene").classList.toggle("hidden", !local);
+  document.getElementById("sceneHelp").classList.toggle("hidden", !scene);
+  updateHelp();
+}
+
+function updateHelp() {
+  const t = T();
+  document.getElementById("allOffHelp").innerHTML = t.helpAllOff;
+  document.getElementById("blindHelp").innerHTML = t.helpBlind;
+  if (!isScene()) return;
+  const box = document.getElementById("sceneHelp");
+  if (sceneKind() === "cloud") box.innerHTML = t.helpCloud;
+  else box.innerHTML = settings.localName ? t.helpLocalPicked : t.helpLocalNew;
+}
+
+function buildLists() {
+  if (isScene()) return buildScenes();
+  if (isAllOff()) return;
+  const list = document.getElementById("load");
+  const wanted = isBlind() ? "position" : "onoff";
+  const useful = loads.filter(function (l) { return l.kind === wanted; });
+  list.innerHTML = "";
+  if (!useful.length) {
+    const empty = document.createElement("option");
+    empty.value = ""; empty.textContent = T().nothing;
+    return void list.appendChild(empty);
+  }
+  const byCategory = {};
+  useful.forEach(function (l) { (byCategory[l.category] = byCategory[l.category] || []).push(l); });
+  Object.keys(byCategory).sort().forEach(function (category) {
+    const group = document.createElement("optgroup");
+    // Group label: the API's raw category code plus the manufacturer's own
+    // product name. Nothing here is inferred from the device name.
+    const products = byCategory[category].map(function (l) { return l.product; })
+      .filter(function (p, i, all) { return p && all.indexOf(p) === i; });
+    group.label = category + (products.length ? "  ·  " + products.join(" / ") : "");
+    byCategory[category].forEach(function (l) {
+      const item = document.createElement("option");
+      item.value = l.id + "|" + l.code;
+      item.textContent = l.name + (l.via === "cloud" ? "   ☁" : "");
+      group.appendChild(item);
+    });
+    list.appendChild(group);
+  });
+}
+
+/** The picker shows the pictures themselves — a list of names would say
+ *  nothing about what lands on the key. */
+function buildIcons() {
+  const grid = document.getElementById("iconGrid");
+  if (!grid) return;
+  const chosen = settings.icon || "auto";
+  grid.innerHTML = "";
+  const add = function (name, inner, hint) {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.title = hint;
+    if (name === chosen) tile.className = "on";
+    tile.innerHTML = inner;
+    tile.addEventListener("click", function () {
+      settings.icon = name;
+      save();
+      buildIcons();
+    });
+    grid.appendChild(tile);
+  };
+  add("auto", '<span class="auto">auto</span>', T().iconAuto);
+  icons.forEach(function (entry) {
+    add(entry.name, '<img src="' + entry.image + '" alt="' + entry.name + '">', entry.name);
+  });
+}
+
+/** Swatches, not names: nobody picks a key colour from the word "violet". */
+function buildTints() {
+  const grid = document.getElementById("tintGrid");
+  if (!grid) return;
+  const chosen = settings.tint || "";
+  grid.innerHTML = "";
+  const add = function (value, label, hint) {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.title = hint;
+    dot.className = (value === chosen ? "on" : "") + (value ? "" : " auto");
+    if (value) dot.style.background = value;
+    else dot.textContent = label;
+    dot.addEventListener("click", function () {
+      settings.tint = value;
+      save();
+      buildTints();
+    });
+    grid.appendChild(dot);
+  };
+  add("", "auto", T().tintAuto);
+  tints.forEach(function (entry) { add(entry.value, "", entry.name); });
+}
+
+/** Each option is drawn in its own family, so the choice is visible here. */
+function buildFonts() {
+  const list = document.getElementById("labelFont");
+  list.innerHTML = "";
+  fonts.forEach(function (family) {
+    const item = document.createElement("option");
+    item.value = family;
+    item.textContent = family;
+    item.style.fontFamily = family;
+    list.appendChild(item);
+  });
+  list.value = settings.labelFont || fonts[0];
+}
+
+function buildScenes() {
+  const list = document.getElementById("scene");
+  const local = sceneKind() === "local";
+  const source = local ? localScenes : scenes;
+  list.innerHTML = "";
+  if (!source.length) {
+    const empty = document.createElement("option");
+    empty.value = ""; empty.textContent = T().nothing;
+    list.appendChild(empty);
+    return void updateSceneRows();
+  }
+  source.forEach(function (entry) {
+    const item = document.createElement("option");
+    item.value = local ? entry : entry.id;
+    item.textContent = local ? entry : entry.name;
+    list.appendChild(item);
+  });
+  updateSceneRows();
+}
+
+function fillForm() {
+  if (isScene()) {
+    const kindBox = document.getElementById("sceneKind");
+    kindBox.value = settings.localName ? "local" : (settings.scene ? "cloud" : kindBox.value);
+    buildScenes();
+    const list = document.getElementById("scene");
+    if (settings.localName) list.value = settings.localName;
+    else if (settings.scene) list.value = settings.scene;
+  } else if (!isAllOff()) {
+    const box = document.getElementById("load");
+    if (settings.target && settings.code) box.value = settings.target + "|" + settings.code;
+  }
+  document.getElementById("label").value = settings.label || "";
+  document.getElementById("labelFont").value = settings.labelFont || fonts[0];
+  document.getElementById("labelSize").value = settings.labelSize || 10;
+  document.getElementById("labelBold").checked = settings.labelBold === true;
+  document.getElementById("labelCase").value = settings.labelCase || "as";
+  buildIcons();
+  buildTints();
+  document.getElementById("showPower").checked = settings.showPower === true;
+  document.getElementById("showLevel").checked = settings.showLevel !== false;
+  document.getElementById("move").value = settings.move || "open";
+  document.getElementById("step").value = settings.step || 10;
+  document.getElementById("zeroIsOpen").value = settings.zeroIsOpen ? "open" : "closed";
+  updateHelp();
+  updateNote();
+}
+
+function updateNote() {
+  const note = document.getElementById("note");
+  const t = T();
+  if (isAllOff() || isScene()) return void (note.innerHTML = "");
+  const chosen = loads.filter(function (l) {
+    return l.id === settings.target && l.code === settings.code;
+  })[0];
+  if (chosen && chosen.via === "cloud") note.innerHTML = t.cloudNote;
+  else if (chosen) note.innerHTML = t.lanNote + " <code>" + chosen.device + "</code> → <code>" +
+    chosen.code + "</code>.";
+  else note.innerHTML = t.pickNote;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("uiLang").addEventListener("change", function (e) {
+    global.uiLang = e.target.value;
+    lang = global.uiLang !== "auto" ? global.uiLang : appLang;
+    saveGlobal();
+    applyLanguage();
+    buildLists();
+  });
+  document.getElementById("btnPair").addEventListener("click", function () {
+    const code = document.getElementById("userCode").value.trim();
+    if (!code) return;
+    setStatus(T().waiting, "");
+    toPlugin({ ask: "pair", userCode: code });
+  });
+  document.getElementById("userCode").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") document.getElementById("btnPair").click();
+  });
+  document.getElementById("btnRescan").addEventListener("click", function () {
+    toPlugin({ ask: "rediscover" });
+  });
+  document.getElementById("btnForget").addEventListener("click", function () {
+    toPlugin({ ask: "forget" });
+    paired = false; loads = []; scenes = []; localScenes = [];
+    showRightPanel(); setStatus("", "");
+  });
+  document.getElementById("sceneKind").addEventListener("change", function () {
+    delete settings.scene; delete settings.home; delete settings.localName;
+    buildScenes(); save(); updateHelp();
+  });
+  document.getElementById("btnNewScene").addEventListener("click", function () {
+    const name = document.getElementById("newScene").value.trim();
+    if (!name) return;
+    toPlugin({ ask: "saveScene", name: name });
+    settings.localName = name; delete settings.scene; delete settings.home;
+    document.getElementById("newScene").value = "";
+    save(); setTimeout(askCatalog, 800);
+  });
+  document.getElementById("load").addEventListener("change", function (e) {
+    const parts = String(e.target.value).split("|");
+    settings.target = parts[0] || ""; settings.code = parts[1] || "";
+    updateNote(); save();
+  });
+  document.getElementById("scene").addEventListener("change", function (e) {
+    if (sceneKind() === "local") {
+      settings.localName = e.target.value; delete settings.scene; delete settings.home;
+    } else {
+      const found = scenes.filter(function (s) { return s.id === e.target.value; })[0];
+      settings.scene = e.target.value; settings.home = found ? found.home : "";
+      delete settings.localName;
+    }
+    updateHelp(); save();
+  });
+  document.getElementById("label").addEventListener("input", function (e) {
+    settings.label = e.target.value; save();
+  });
+  document.getElementById("labelFont").addEventListener("change", function (e) {
+    settings.labelFont = e.target.value; save();
+  });
+  document.getElementById("labelSize").addEventListener("change", function (e) {
+    settings.labelSize = Math.max(6, Math.min(20, parseInt(e.target.value, 10) || 10));
+    e.target.value = settings.labelSize; save();
+  });
+  document.getElementById("labelBold").addEventListener("change", function (e) {
+    settings.labelBold = e.target.checked; save();
+  });
+  document.getElementById("labelCase").addEventListener("change", function (e) {
+    settings.labelCase = e.target.value; save();
+  });
+  // Inside <summary>, so the click has to be kept from toggling the panel.
+  document.getElementById("btnClearLog").addEventListener("click", function (e) {
+    e.preventDefault(); e.stopPropagation();
+    toPlugin({ ask: "clearLog" });
+  });
+  document.getElementById("showPower").addEventListener("change", function (e) {
+    settings.showPower = e.target.checked; save();
+  });
+  document.getElementById("showLevel").addEventListener("change", function (e) {
+    settings.showLevel = e.target.checked; save();
+  });
+  document.getElementById("move").addEventListener("change", function (e) {
+    settings.move = e.target.value; save();
+  });
+  document.getElementById("zeroIsOpen").addEventListener("change", function (e) {
+    settings.zeroIsOpen = e.target.value === "open"; save();
+  });
+  document.getElementById("step").addEventListener("change", function (e) {
+    settings.step = Math.max(1, Math.min(50, parseInt(e.target.value, 10) || 10));
+    e.target.value = settings.step; save();
+  });
+});
+</script>
+</body>
+</html>

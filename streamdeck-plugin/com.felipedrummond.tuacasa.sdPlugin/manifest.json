@@ -1,0 +1,93 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "Name": "Tua Casa",
+  "Version": "1.0.0.0",
+  "Author": "Felipe Drummond",
+  "URL": "https://github.com/ffapd1989/tuacasa",
+  "Description": "Control your smart home from the Stream Deck. Works with Tuya®-compatible devices — the ones already in your Smart Life® or Tuya Smart® app — directly over your network. Keys show live state.",
+  "Category": "Tua Casa",
+  "CategoryIcon": "imgs/plugin/category",
+  "Icon": "imgs/plugin/plugin",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 3,
+  "Software": {
+    "MinimumVersion": "7.1"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Nodejs": {
+    "Version": "24",
+    "Debug": "enabled"
+  },
+  "UUID": "com.felipedrummond.tuacasa",
+  "Actions": [
+    {
+      "Name": "Light / socket",
+      "UUID": "com.felipedrummond.tuacasa.switch",
+      "Icon": "imgs/action/switch",
+      "Tooltip": "Turn one device on and off. Each gang of a multi-gang wall switch is listed separately. The key shows live state and power draw.",
+      "PropertyInspectorPath": "ui/inspector.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/states/off",
+          "TitleAlignment": "middle"
+        }
+      ]
+    },
+    {
+      "Name": "Blind",
+      "UUID": "com.felipedrummond.tuacasa.blind",
+      "Icon": "imgs/action/blind",
+      "Tooltip": "Open, close, stop or nudge a blind. The key shows the current position.",
+      "PropertyInspectorPath": "ui/inspector.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/states/blind",
+          "TitleAlignment": "middle"
+        }
+      ]
+    },
+    {
+      "Name": "Scene",
+      "UUID": "com.felipedrummond.tuacasa.scene",
+      "Icon": "imgs/action/scene",
+      "Tooltip": "Run a scene from your app, or save and replay one of your own.",
+      "PropertyInspectorPath": "ui/inspector.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/states/scene",
+          "TitleAlignment": "middle"
+        }
+      ]
+    },
+    {
+      "Name": "All off",
+      "UUID": "com.felipedrummond.tuacasa.alloff",
+      "Icon": "imgs/action/alloff",
+      "Tooltip": "Hold to switch off every reachable load at once.",
+      "PropertyInspectorPath": "ui/inspector.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/states/alloff",
+          "TitleAlignment": "middle"
+        }
+      ]
+    }
+  ]
+}
