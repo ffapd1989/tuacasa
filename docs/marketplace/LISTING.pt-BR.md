@@ -24,22 +24,23 @@ das mesmas funções que desenham a tecla física e das imagens do painel em
 
 ## Descrição
 
-Entre 250 e 1.500 caracteres; os primeiros 250 têm de ser texto corrido, porque viram o
-trecho que aparece na busca. O texto para colar é o bloco do
-[LISTING.md](LISTING.md#description) (1.473 caracteres). O que ele diz, em português:
+O campo aceita Markdown. Entre 250 e 1.500 caracteres, em inglês; os primeiros 250 têm de
+ser texto sem formatação, porque viram o trecho que aparece na busca (as
+[diretrizes de produto](https://docs.elgato.com/guidelines/products/) da Elgato). O texto para
+colar é o bloco do [LISTING.md](LISTING.md#description) (1.434 caracteres, 1.454 se a loja
+contar cada quebra de linha como dois). O que ele diz, em português:
 
-- O primeiro parágrafo apresenta o plugin: luzes, tomadas, interruptores de parede,
-  persianas e cenas de aparelhos da plataforma Tuya ou Smart Life, os mesmos do app Smart
-  Life ou Tuya Smart, comandados pela sua rede em cerca de 100 ms.
-- "What it does" lista o que cada ação faz, os 14 ícones, as 9 cores e os três idiomas do
-  painel.
-- "Setup" são os três passos do pareamento dentro do painel.
-- "Requirements": Windows 10 ou 11, Stream Deck 7.1 ou mais novo, aparelhos já no app e o
-  PC na mesma rede.
-- Uma frase diz que o pareamento entra com a identidade de aplicativo da integração Tuya do
-  Home Assistant, e que, se a Tuya mudá-la, o pareamento para até sair uma atualização,
-  enquanto os aparelhos da rede continuam funcionando — o mesmo que o
-  [LIMITS.pt-BR.md](../../LIMITS.pt-BR.md) diz.
+- O primeiro parágrafo, sem formatação, apresenta o plugin: luzes, tomadas, interruptores de
+  parede, persianas e cenas de aparelhos da plataforma Tuya ou Smart Life, os mesmos do app
+  Smart Life ou Tuya Smart, respondendo em cerca de 100 ms pela sua rede.
+- **What it does**, em lista: uma tecla por saída, estado ao vivo com watts, persianas, cenas,
+  o All off, a nuvem de reserva, os 14 ícones, as 9 cores e os três idiomas do painel.
+- **Setup**, em lista numerada: os três passos do pareamento dentro do painel.
+- **Requirements**: Windows 10 ou 11, Stream Deck 7.1 ou mais novo, aparelhos já no app e o PC
+  na mesma rede.
+- **Good to know**: o pareamento usa a identidade de aplicativo da integração Tuya do Home
+  Assistant; se a Tuya mudá-la, o pareamento para até sair uma atualização, e os aparelhos da
+  rede continuam funcionando. É o mesmo que o [LIMITS.pt-BR.md](../../LIMITS.pt-BR.md) diz.
 - Fecha dizendo que Tuya, Smart Life e Tuya Smart são marcas registradas dos respectivos
   donos, que o plugin não tem vínculo com eles, e com o link do repositório.
 
@@ -59,8 +60,11 @@ privacidade, suporte (issues) e limitações conhecidas.
 
 ## Notas da versão — a primeira na loja
 
-O número da versão é o `Version` do manifest no momento em que o pacote é gerado. O texto
-para colar está no [LISTING.md](LISTING.md#release-notes--the-first-marketplace-version).
+O número da versão é o `Version` do manifest no momento em que o pacote é gerado. Este campo
+também aceita Markdown, e o texto para colar está no
+[LISTING.md](LISTING.md#release-notes--the-first-marketplace-version): um título em negrito e
+quatro itens, que dizem com que aparelhos funciona, a velocidade pela rede com a nuvem de
+reserva, o pareamento dentro do painel com o Python embutido e os três idiomas.
 
 ## Vídeo de demonstração
 

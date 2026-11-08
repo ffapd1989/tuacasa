@@ -24,31 +24,33 @@ the same functions that draw the physical key and from the panel pictures in
 
 ## Description
 
-Between 250 and 1,500 characters; the first 250 must be plain text, because they become the
-search snippet. Paste everything inside the block (1,473 characters).
+The field takes Markdown. Between 250 and 1,500 characters, in English; the first 250 must
+be unformatted, because they become the search snippet (Elgato's
+[product guidelines](https://docs.elgato.com/guidelines/products/)). Paste everything inside
+the block (1,434 characters).
 
-```text
-Control your smart home from the Stream Deck. Lights, sockets, wall switches, blinds and scenes from devices on the Tuya® or Smart Life® platform, the ones already in your Smart Life or Tuya Smart® app, go on your keys, over your own network in about 100 ms.
+```markdown
+Control your smart home from the Stream Deck. Lights, sockets, wall switches, blinds and scenes from devices on the Tuya® or Smart Life® platform, the ones already in your Smart Life or Tuya Smart® app, go on your keys, answering in about 100 ms over your own network.
 
-What it does
-• One key per output: a 4-gang wall switch becomes four keys
-• Live state: lit when on, watts where the socket measures, in sync with the phone
-• Blinds: open, close, stop or nudge by a step; the key draws where the blind is
-• Scenes from your app, or recorded on the Deck and replayed with a tap
-• All off: hold to switch off everything at once
-• Devices that refuse local control fall back to the cloud on their own
-• 14 icons, 9 colours and a label you style per key; panel in English, Portuguese and Spanish
+**What it does**
+- One key per output: a 4-gang wall switch becomes four keys
+- Live state on every key, in sync with the phone, with watts where the socket measures them
+- Blinds open, close, stop or nudge, and the key draws where the blind is
+- Scenes from your app, or recorded on the Deck
+- Hold **All off** to switch off everything at once
+- Cloud fallback for devices that refuse local control
+- 14 icons, 9 colours, your own label; panel in English, Portuguese and Spanish
 
-Setup, all inside the panel
-1. Drag an action onto a key.
-2. Type the user code from your Smart Life or Tuya Smart app and scan the QR code with it.
-3. Pick a device. Python is bundled; nothing else to install.
+**Setup, all inside the panel**
+1. Drag a Tua Casa action onto a key.
+2. Type your app's user code, then scan the QR code with the app.
+3. Pick a device. Python is bundled: nothing else to install.
 
-Requirements: Windows 10 or 11, Stream Deck 7.1 or later, devices already set up in the app, and the PC on their network.
+**Requirements:** Windows 10 or 11, Stream Deck 7.1 or later, devices set up in the app and the PC on their network.
 
-Pairing signs in with the app identity of Home Assistant's Tuya integration. If Tuya changes it, pairing stops until an update; devices on your network keep working.
+**Good to know:** pairing uses the app identity of Home Assistant's Tuya integration. If Tuya changes it, pairing stops until an update; devices on your network keep working.
 
-Tuya, Smart Life and Tuya Smart are registered trademarks of their respective owners; this plugin is not affiliated with them. Open source, GPL-3.0: https://github.com/ffapd1989/tuacasa
+Tuya, Smart Life and Tuya Smart are registered trademarks of their respective owners; this plugin is not affiliated with them. Open source under GPL-3.0: https://github.com/ffapd1989/tuacasa
 ```
 
 ## Tags
@@ -71,14 +73,15 @@ The tag vocabulary is only visible inside Maker Console. What to pick there:
 
 ## Release notes — the first Marketplace version
 
-The version number is whatever `Version` in the manifest says when the package is built.
+The version number is whatever `Version` in the manifest says when the package is built. The
+field takes Markdown too.
 
-```text
-First Marketplace release.
-• Lights, sockets, wall switches, blinds and scenes from Tuya-compatible devices, with live state on every key
-• Commands over your own network in about 100 ms, with an automatic fallback to your account
-• Pairing inside the panel with your app's user code and a QR code; Python comes inside the plugin
-• Panel in English, Portuguese and Spanish
+```markdown
+**First Marketplace release**
+- Lights, sockets, wall switches, blinds and scenes from devices on the Tuya® or Smart Life® platform, with live state on every key
+- Commands over your own network in about 100 ms, with an automatic fallback to the cloud
+- Pairing inside the panel with your app's user code and a QR code; Python is bundled
+- Panel in English, Portuguese and Spanish
 ```
 
 ## Demo video
