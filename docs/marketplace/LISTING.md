@@ -25,10 +25,10 @@ the same functions that draw the physical key and from the panel pictures in
 ## Description
 
 Between 250 and 1,500 characters; the first 250 must be plain text, because they become the
-search snippet. Paste everything inside the block (1,420 characters).
+search snippet. Paste everything inside the block (1,473 characters).
 
 ```text
-Control your smart home from the Stream Deck. Lights, sockets, wall switches, blinds and scenes from Tuya®-compatible devices, the ones already in your Smart Life® or Tuya Smart® app, go on your keys. Commands travel over your own network in about 100 ms.
+Control your smart home from the Stream Deck. Lights, sockets, wall switches, blinds and scenes from devices on the Tuya® or Smart Life® platform, the ones already in your Smart Life or Tuya Smart® app, go on your keys, over your own network in about 100 ms.
 
 What it does
 • One key per output: a 4-gang wall switch becomes four keys
@@ -36,19 +36,19 @@ What it does
 • Blinds: open, close, stop or nudge by a step; the key draws where the blind is
 • Scenes from your app, or recorded on the Deck and replayed with a tap
 • All off: hold to switch off everything at once
-• Devices that refuse local control fall back to your account automatically
+• Devices that refuse local control fall back to the cloud on their own
 • 14 icons, 9 colours and a label you style per key; panel in English, Portuguese and Spanish
 
 Setup, all inside the panel
 1. Drag an action onto a key.
 2. Type the user code from your Smart Life or Tuya Smart app and scan the QR code with it.
-3. Pick a device. Python comes inside the plugin; there is nothing else to install.
+3. Pick a device. Python is bundled; nothing else to install.
 
-Requirements: Windows 10 or 11, Stream Deck 7.1 or later, devices already set up in the app, and the PC on the same network as them.
+Requirements: Windows 10 or 11, Stream Deck 7.1 or later, devices already set up in the app, and the PC on their network.
 
 Pairing signs in with the app identity of Home Assistant's Tuya integration. If Tuya changes it, pairing stops until an update; devices on your network keep working.
 
-Not affiliated with Tuya or Smart Life. Open source, GPL-3.0: https://github.com/ffapd1989/tuacasa
+Tuya, Smart Life and Tuya Smart are registered trademarks of their respective owners; this plugin is not affiliated with them. Open source, GPL-3.0: https://github.com/ffapd1989/tuacasa
 ```
 
 ## Tags
@@ -95,6 +95,17 @@ both. What the store version adds:
 - Panel in English and English captions, because the reviewer reads English.
 - Nothing readable that identifies an account or a house: no user code, no QR, no device
   IDs or local keys from the Activity log. Blur them in the edit.
+
+The current video runs 1:07 and weighs 8 MB; it is not versioned, because the repository is
+no place for it. It was recorded live in the Stream Deck app on the author's Stream Deck XL,
+with the narration from OpenAI's `gpt-4o-mini-tts`. What it shows, in order:
+
+1. The title card.
+2. A light key tapped on and off twice: the key lights up when the device reports back.
+3. A blind closed, stopped and opened, with the blind key following the motor.
+4. A scene from the app, then All off held: every lit key goes dark.
+5. The panel and the pairing screens, from the gallery images.
+6. The closing card, with the repository and the trademark notice.
 
 ## Before pressing submit
 

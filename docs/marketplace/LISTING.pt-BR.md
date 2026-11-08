@@ -26,11 +26,11 @@ das mesmas funções que desenham a tecla física e das imagens do painel em
 
 Entre 250 e 1.500 caracteres; os primeiros 250 têm de ser texto corrido, porque viram o
 trecho que aparece na busca. O texto para colar é o bloco do
-[LISTING.md](LISTING.md#description) (1.420 caracteres). O que ele diz, em português:
+[LISTING.md](LISTING.md#description) (1.473 caracteres). O que ele diz, em português:
 
 - O primeiro parágrafo apresenta o plugin: luzes, tomadas, interruptores de parede,
-  persianas e cenas de aparelhos compatíveis com Tuya, os mesmos do app Smart Life ou Tuya
-  Smart, comandados pela sua rede em cerca de 100 ms.
+  persianas e cenas de aparelhos da plataforma Tuya ou Smart Life, os mesmos do app Smart
+  Life ou Tuya Smart, comandados pela sua rede em cerca de 100 ms.
 - "What it does" lista o que cada ação faz, os 14 ícones, as 9 cores e os três idiomas do
   painel.
 - "Setup" são os três passos do pareamento dentro do painel.
@@ -40,7 +40,8 @@ trecho que aparece na busca. O texto para colar é o bloco do
   Home Assistant, e que, se a Tuya mudá-la, o pareamento para até sair uma atualização,
   enquanto os aparelhos da rede continuam funcionando — o mesmo que o
   [LIMITS.pt-BR.md](../../LIMITS.pt-BR.md) diz.
-- Fecha com a não afiliação e o link do repositório.
+- Fecha dizendo que Tuya, Smart Life e Tuya Smart são marcas registradas dos respectivos
+  donos, que o plugin não tem vínculo com eles, e com o link do repositório.
 
 ## Tags
 
@@ -75,6 +76,17 @@ filmagem serve aos dois. O que a versão da loja acrescenta:
 - Painel em inglês e legendas em inglês, porque o revisor lê inglês.
 - Nada legível que identifique uma conta ou uma casa: sem código de usuário, sem QR, sem IDs
   de aparelho nem chaves locais do log de atividade. Borre na edição.
+
+O vídeo atual tem 1:07 e 8 MB; não é versionado, porque o repositório não é lugar para ele.
+Foi gravado ao vivo no app do Stream Deck, no Stream Deck XL do autor, com a narração do
+`gpt-4o-mini-tts` da OpenAI. O que ele mostra, na ordem:
+
+1. A abertura.
+2. Uma tecla de luz ligada e desligada duas vezes: a tecla acende quando o aparelho responde.
+3. Uma persiana fechada, parada e aberta, com a tecla acompanhando o motor.
+4. Uma cena do app e depois o All off segurado: toda tecla acesa se apaga.
+5. O painel e as telas de pareamento, a partir das imagens da galeria.
+6. O encerramento, com o repositório e o aviso de marcas.
 
 ## Antes de apertar submit
 
