@@ -8,7 +8,10 @@ explica em português o que vai em cada campo.
 
 As imagens desta pasta são geradas pelo `npm run promo` (em `streamdeck-plugin/`), a partir
 das mesmas funções que desenham a tecla física e das imagens do painel em
-[../img/](../img/). Mudou as teclas ou o painel, rode de novo.
+[../img/](../img/). Mudou as teclas ou o painel, rode de novo. Onde aparece um Stream Deck,
+ele é a imagem oficial do Stream Deck MK.2 da Elgato Media Room, com as teclas postas nas
+telas dele: a revisão recusa desenho caseiro de hardware da Elgato (veja o
+[THIRD-PARTY.pt-BR.md](../../THIRD-PARTY.pt-BR.md#arte)).
 
 ## Produto
 
@@ -71,9 +74,10 @@ reserva, o pareamento dentro do painel com o Python embutido e os três idiomas.
 ## Vídeo de demonstração
 
 O revisor não tem aparelhos Tuya, então um vídeo de teclas reais comandando aparelhos reais
-é a única prova que ele terá de que o plugin funciona. O único espaço para vídeo na
-submissão é um item da galeria, então ele vai lá, ao lado das imagens. MP4, 1920×1080,
-**menos de 50 MB**.
+é a única prova que ele terá de que o plugin funciona. A revisão pede esse vídeo **por e-mail
+para maker@elgato.com** antes da aprovação; a galeria também aceita vídeo, mas lá é opcional.
+MP4, 1920×1080, menos de 250 MB na galeria (o arquivo atual está muito abaixo de qualquer
+limite).
 
 As tomadas são as do [LAUNCH.pt-BR.md](../LAUNCH.pt-BR.md#vídeo-de-demonstração), e a mesma
 filmagem serve aos dois. O que a versão da loja acrescenta:
@@ -83,7 +87,7 @@ filmagem serve aos dois. O que a versão da loja acrescenta:
 - Nada legível que identifique uma conta ou uma casa: sem código de usuário, sem QR, sem IDs
   de aparelho nem chaves locais do log de atividade. Borre na edição.
 
-O vídeo atual tem 1:07 e 8 MB; não é versionado, porque o repositório não é lugar para ele.
+O vídeo atual tem 1:07 e 3 MB; não é versionado, porque o repositório não é lugar para ele.
 Foi gravado ao vivo no app do Stream Deck, no Stream Deck XL do autor, com a narração do
 `gpt-4o-mini-tts` da OpenAI. O que ele mostra, na ordem:
 

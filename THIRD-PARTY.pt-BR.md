@@ -125,6 +125,12 @@ que ele é a única arte em [`src/icons.ts`](streamdeck-plugin/src/icons.ts) com
 de três dígitos. A cúpula é preenchida com a cor de estado da tecla em vez do cinza chapado
 do original, então o abajur fica âmbar junto com o resto.
 
+**O Stream Deck da arte da loja é da Elgato.** A thumbnail e as imagens de galeria em
+`docs/marketplace/` põem as teclas sobre a imagem oficial do Stream Deck MK.2 da Elgato, da
+[Elgato Media Room](https://www.elgato.com/s/media-room), porque a loja pede recursos
+oficiais onde aparece hardware da Elgato. O `npm run promo` baixa essa imagem na hora de gerar
+e confere o hash dela; ela não está no repositório e não faz parte do plugin.
+
 ## Compatibilidade de licenças, numa tabela
 
 Por que cada uma delas pode ficar dentro de um projeto GPL-3.0-or-later:

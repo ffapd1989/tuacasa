@@ -1,7 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Felipe Drummond
 // SPDX-License-Identifier: GPL-3.0-or-later
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { allOffKey, blindKey, deviceKey, sceneKey, PLAIN_LABEL, PLAIN_LOOK } from "../src/keys.ts";
@@ -23,6 +24,54 @@ function screenshot(name, html, width, height, outFile) {
     `--screenshot=${outFile}`, pathToFileURL(page).href,
   ], { stdio: "ignore" });
   console.log(`wrote ${outFile}`);
+}
+
+const OFFICIAL_DECK = {
+  url: "https://res.cloudinary.com/corsairdam/image/upload/v1774609007/Stream_Deck_MK.2_Device_Shot_02_No_Cable_Shadow_u0zfei.png",
+  sha256: "2a148b2da3c6d906b3730bc14bb587c7b0d3365d0e8b36107c2c923fb2769d38",
+  width: 6000,
+  crop: { left: 858, top: 770, width: 4434, height: 2812 },
+  keyGrid: [[471.5577, -43.356198, 1463.8627], [0.88889826, 355.27017, 1252.8023], [-0.00095723923, -0.013327512, 1]],
+  keyPitch: 1.44,
+};
+const KEY_BLEED = 0.05;
+const KEY_SIZE = 200;
+const officialDeckFile = join(workDir, "stream-deck-mk2.png");
+if (!existsSync(officialDeckFile)) {
+  const response = await fetch(OFFICIAL_DECK.url);
+  if (!response.ok) throw new Error(`download failed: ${response.status} ${OFFICIAL_DECK.url}`);
+  writeFileSync(officialDeckFile, Buffer.from(await response.arrayBuffer()));
+}
+const deckDigest = createHash("sha256").update(readFileSync(officialDeckFile)).digest("hex");
+if (deckDigest !== OFFICIAL_DECK.sha256) {
+  rmSync(officialDeckFile);
+  throw new Error(`Stream Deck image hash mismatch: got ${deckDigest}, expected ${OFFICIAL_DECK.sha256}`);
+}
+
+const multiply = (left, right) => left.map((row) =>
+  right[0].map((_, column) => row.reduce((sum, value, index) => sum + value * right[index][column], 0)));
+
+const OFFICIAL_DECK_STYLE = `.official-deck{position:relative;flex:none}
+    .official-deck .device{position:absolute;max-width:none;display:block}
+    .official-deck .key{position:absolute;left:0;top:0;width:${KEY_SIZE}px;height:${KEY_SIZE}px;
+      transform-origin:0 0;border-radius:22px;background:#000;display:block}`;
+
+function officialDeck(keys, width) {
+  const { crop, keyGrid, keyPitch } = OFFICIAL_DECK;
+  const scale = width / crop.width;
+  const toScreen = [[scale, 0, -scale * crop.left], [0, scale, -scale * crop.top], [0, 0, 1]];
+  const stretch = (1 + 2 * KEY_BLEED) / KEY_SIZE;
+  const keyImages = keys.map((uri, index) => {
+    const column = index % 5;
+    const row = Math.floor(index / 5);
+    const toFlat = [[stretch, 0, column * keyPitch - KEY_BLEED], [0, stretch, row * keyPitch - KEY_BLEED], [0, 0, 1]];
+    const [[a, b, c], [d, e, f], [g, h, i]] = multiply(multiply(toScreen, keyGrid), toFlat);
+    const matrix = [a, d, 0, g, b, e, 0, h, 0, 0, 1, 0, c, f, 0, i].map((value) => +value.toPrecision(10));
+    return `<img class="key" src="${uri}" style="transform:matrix3d(${matrix.join(",")})">`;
+  }).join("");
+  return `<div class="official-deck" style="width:${width}px;height:${Math.round(crop.height * scale)}px">` +
+    `<img class="device" src="${pathToFileURL(officialDeckFile).href}" style="width:${OFFICIAL_DECK.width * scale}px;` +
+    `left:${-crop.left * scale}px;top:${-crop.top * scale}px">${keyImages}</div>`;
 }
 
 const look = (icon, over = {}) => ({ ...PLAIN_LOOK, icon, ...over, label: { ...PLAIN_LABEL } });
@@ -56,7 +105,35 @@ const COPY = {
   },
 };
 
-let heroEnglish = "";
+const heroPage = (copy, deckMarkup) => `<!doctype html><meta charset="utf-8"><style>
+    html,body{margin:0;width:1280px;height:640px;overflow:hidden}
+    body{background:radial-gradient(circle at 78% 50%,#1d2129 0,#101216 62%);color:#e8eaed;
+      font-family:Segoe UI,system-ui,sans-serif;display:flex;align-items:center;gap:56px;
+      padding:0 64px;box-sizing:border-box}
+    .copy{flex:1;min-width:0}
+    .brand{display:flex;align-items:center;gap:12px;color:#ffb02e;font-weight:600;
+      letter-spacing:.14em;text-transform:uppercase;font-size:17px;margin-bottom:22px}
+    .brand img{width:44px;height:44px;border-radius:9px}
+    h1{font-size:52px;line-height:1.08;margin:0 0 20px;font-weight:700;letter-spacing:-.01em}
+    p{font-size:19px;line-height:1.5;color:#aab1bb;margin:0 0 28px;max-width:470px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;max-width:500px}
+    .chips span{font-size:14px;color:#c8ccd2;border:1px solid #2f343e;background:#171a20;
+      border-radius:999px;padding:6px 13px}
+    .deck{background:#0b0c0f;border:1px solid #262a32;border-radius:26px;padding:20px;
+      display:grid;grid-template-columns:repeat(5,96px);gap:12px;
+      box-shadow:0 30px 60px rgba(0,0,0,.45)}
+    .deck img{width:96px;height:96px;border-radius:12px;display:block;background:#000}
+    ${OFFICIAL_DECK_STYLE}
+  </style>
+  <div class="copy">
+    <div class="brand"><img src="data:image/svg+xml;utf8,${encodeURIComponent(brandMarkSvg)}">Tua Casa</div>
+    <h1>${copy.title}</h1>
+    <p>${copy.body}</p>
+    <div class="chips">${copy.chips.map((chip) => `<span>${chip}</span>`).join("")}</div>
+  </div>
+  ${deckMarkup}`;
+
+let heroKeysEnglish = [];
 for (const [locale, copy] of Object.entries(COPY)) {
   const text = keyText(locale);
   const name = copy.names;
@@ -77,39 +154,14 @@ for (const [locale, copy] of Object.entries(COPY)) {
     sceneKey(name.night, "", false, look("night")),
     allOffKey(text.allOff.join(" "), text.hold, false, look("power")),
   ];
-  const html = `<!doctype html><meta charset="utf-8"><style>
-    html,body{margin:0;width:1280px;height:640px;overflow:hidden}
-    body{background:radial-gradient(circle at 78% 50%,#1d2129 0,#101216 62%);color:#e8eaed;
-      font-family:Segoe UI,system-ui,sans-serif;display:flex;align-items:center;gap:56px;
-      padding:0 64px;box-sizing:border-box}
-    .copy{flex:1;min-width:0}
-    .brand{display:flex;align-items:center;gap:12px;color:#ffb02e;font-weight:600;
-      letter-spacing:.14em;text-transform:uppercase;font-size:17px;margin-bottom:22px}
-    .brand img{width:44px;height:44px;border-radius:9px}
-    h1{font-size:52px;line-height:1.08;margin:0 0 20px;font-weight:700;letter-spacing:-.01em}
-    p{font-size:19px;line-height:1.5;color:#aab1bb;margin:0 0 28px;max-width:470px}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;max-width:500px}
-    .chips span{font-size:14px;color:#c8ccd2;border:1px solid #2f343e;background:#171a20;
-      border-radius:999px;padding:6px 13px}
-    .deck{background:#0b0c0f;border:1px solid #262a32;border-radius:26px;padding:20px;
-      display:grid;grid-template-columns:repeat(5,96px);gap:12px;
-      box-shadow:0 30px 60px rgba(0,0,0,.45)}
-    .deck img{width:96px;height:96px;border-radius:12px;display:block;background:#000}
-  </style>
-  <div class="copy">
-    <div class="brand"><img src="data:image/svg+xml;utf8,${encodeURIComponent(brandMarkSvg)}">Tua Casa</div>
-    <h1>${copy.title}</h1>
-    <p>${copy.body}</p>
-    <div class="chips">${copy.chips.map((chip) => `<span>${chip}</span>`).join("")}</div>
-  </div>
-  <div class="deck">${keys.map((uri) => `<img src="${uri}">`).join("")}</div>`;
+  const html = heroPage(copy, `<div class="deck">${keys.map((uri) => `<img src="${uri}">`).join("")}</div>`);
   screenshot(`social-${locale}`, html, 1280, 640, join(repoRoot, "docs", "img", `social-preview-${locale}.png`));
-  if (locale === "en") heroEnglish = html;
+  if (locale === "en") heroKeysEnglish = keys;
 }
 
 const storeDir = join(repoRoot, "docs", "marketplace");
 mkdirSync(storeDir, { recursive: true });
-const hero = heroEnglish.replace("<style>", "<style>html{zoom:1.5}");
+const hero = heroPage(COPY.en, officialDeck(heroKeysEnglish, 640)).replace("<style>", "<style>html{zoom:1.5}");
 screenshot("store-thumbnail", hero, 1920, 960, join(storeDir, "thumbnail.png"));
 screenshot("store-gallery-1", hero, 1920, 960, join(storeDir, "gallery-1-home.png"));
 screenshot("store-app-icon", iconPage(288), 288, 288, join(storeDir, "app-icon.png"));
@@ -123,14 +175,11 @@ const slide = (title, body, visual) => `<!doctype html><meta charset="utf-8"><st
     h1{font-size:68px;line-height:1.08;margin:0 0 28px;font-weight:700;letter-spacing:-.01em}
     p{font-size:27px;line-height:1.5;color:#aab1bb;margin:0}
     .visual{flex:1;display:flex;justify-content:center;align-items:center;gap:36px}
-    .deck{background:#0b0c0f;border:1px solid #262a32;border-radius:34px;padding:28px;
-      display:grid;grid-template-columns:repeat(5,150px);gap:18px;
-      box-shadow:0 30px 60px rgba(0,0,0,.45)}
-    .deck img{width:150px;height:150px;border-radius:18px;display:block;background:#000}
+    ${OFFICIAL_DECK_STYLE}
     .panel{width:500px;border-radius:14px;border:1px solid #262a32;display:block;
       box-shadow:0 30px 60px rgba(0,0,0,.45)}
   </style><div class="copy"><h1>${title}</h1><p>${body}</p></div><div class="visual">${visual}</div>`;
-const deck = (keys) => `<div class="deck">${keys.map((uri) => `<img src="${uri}">`).join("")}</div>`;
+const deck = (keys) => officialDeck(keys, 900);
 const panels = (...names) => names.map((name) =>
   `<img class="panel" src="${pathToFileURL(join(repoRoot, "docs", "img", `${name}-en.png`)).href}">`).join("");
 const english = keyText("en");
@@ -149,6 +198,11 @@ screenshot("store-gallery-2", slide("Every key shows<br>live state.",
     blindKey(51, true, "Blind", `${english.open} 10%`, ""),
     blindKey(80, true, "Blind", `${english.close} 10%`, ""),
     blindKey(100, true, "Curtain", english.stop, english.isClosed),
+    deviceKey(true, true, "Desk", "23.4 W", "lan", look("socket")),
+    deviceKey(true, true, "Fan", "", "lan", look("fan")),
+    deviceKey(false, true, "Counter", "", "lan", look("spot")),
+    deviceKey(true, true, "Frame", "", "cloud", look("picture")),
+    deviceKey(false, true, "Porch", "", "lan", look("bulb")),
   ])), 1920, 960, join(storeDir, "gallery-2-state.png"));
 
 screenshot("store-gallery-3", slide("Pairs inside<br>the panel.",
@@ -163,11 +217,21 @@ screenshot("store-gallery-4", slide("Each key,<br>your way.",
 
 screenshot("store-gallery-5", slide("Scenes, and<br>all off.",
   "Run a scene from your app, or record what is on right now and replay it with a tap. " +
-  "Hold All off to switch off everything it can reach.",
+  "Hold All off, and everything it can reach goes dark.",
   deck([
+    deviceKey(false, true, "Floor lamp", "", "lan", look("lamp")),
+    deviceKey(false, true, "Living — 1", "", "lan", look("switch")),
+    deviceKey(false, true, "Living — 2", "", "lan", look("switch")),
+    deviceKey(false, true, "Reading", "", "cloud", look("bulb")),
+    deviceKey(false, true, "Counter", "", "lan", look("spot")),
+    blindKey(30, true, "Blind", `${english.close} 10%`, ""),
+    blindKey(100, true, "Curtain", english.stop, english.isClosed),
+    deviceKey(false, true, "Fan", "", "lan", look("fan")),
+    deviceKey(false, true, "Frame", "", "cloud", look("picture")),
+    deviceKey(false, true, "Hallway", "0.0 W", "lan", look("socket")),
     sceneKey("Sleep", "", false, look("sleep")),
     sceneKey("Movie", english.tapApplies, true, look("star")),
     sceneKey("Focus", "", false, look("work")),
     sceneKey("Night mode", "", false, look("night")),
-    allOffKey(english.allOff.join(" "), english.hold, false, look("power")),
+    allOffKey(english.allOff.join(" "), english.done, true, look("power")),
   ])), 1920, 960, join(storeDir, "gallery-5-scenes.png"));

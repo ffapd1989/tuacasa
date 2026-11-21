@@ -124,6 +124,13 @@ why it is the only artwork in
 filled with the key's state colour instead of the source's flat grey, so the lamp goes
 amber with everything else.
 
+**The Stream Deck in the Marketplace art is Elgato's.** The thumbnail and the gallery images
+in `docs/marketplace/` place the keys on Elgato's official Stream Deck MK.2 product image,
+from the [Elgato Media Room](https://www.elgato.com/s/media-room), because the Marketplace
+asks for official resources wherever Elgato hardware appears. `npm run promo` downloads that
+image at build time and checks it by hash; it is not in the repository, and it is not part of
+the plugin.
+
 ## Licence compatibility, in one table
 
 Why each of these can sit inside a GPL-3.0-or-later project:
