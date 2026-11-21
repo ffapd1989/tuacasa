@@ -1,6 +1,6 @@
 {
   "name": "tuacasa-streamdeck",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "private": true,
   "description": "Stream Deck plugin: control your smart home locally",
