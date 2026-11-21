@@ -19,7 +19,7 @@ rode de novo.
 | Campo | Valor |
 |---|---|
 | Visibilidade | Público |
-| Descrição | o bloco em inglês do [LAUNCH.md](LAUNCH.md#repository-settings) — 242 dos 350 caracteres que o GitHub permite |
+| Descrição | o bloco em inglês do [LAUNCH.md](LAUNCH.md#repository-settings) — 224 dos 350 caracteres que o GitHub permite |
 | Site | `https://github.com/ffapd1989/tuacasa/releases/latest` |
 | Tópicos | `stream-deck` `streamdeck-plugin` `elgato` `tuya` `smart-life` `smart-home` `home-automation` `local-control` `windows` |
 | Prévia social | [img/social-preview-en.png](img/social-preview-en.png) — 1280×640 |

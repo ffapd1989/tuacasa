@@ -177,15 +177,15 @@ Este plugin se apoia em trabalho de outras pessoas, tudo sob licença permissiva
 Toda dependência, direta e transitiva, com versões e a escolha feita nas duas que vêm com
 licença dupla: [THIRD-PARTY.pt-BR.md](THIRD-PARTY.pt-BR.md).
 
-O fluxo de pareamento por QR é o que a integração Tuya do Home Assistant estabeleceu. Veja
-[LIMITS.pt-BR.md](LIMITS.pt-BR.md) para uma nota honesta sobre a identidade de aplicação de que
-ele depende.
+O fluxo de pareamento por QR é o que a integração Tuya do Home Assistant estabeleceu; o que
+isso significa para você está no
+[LIMITS.pt-BR.md](LIMITS.pt-BR.md#o-pareamento-depende-da-identidade-de-aplicativo-do-home-assistant).
 
 ## Marcas
 
-Tuya® e Smart Life® são marcas de seus respectivos donos. Este projeto **não é afiliado,
-endossado nem patrocinado** por eles. Os nomes aparecem apenas para dizer com quais aparelhos
-este plugin conversa.
+Tuya®, Smart Life® e Tuya Smart® são marcas registradas dos respectivos donos. Este projeto
+**não é afiliado, endossado nem patrocinado** por eles. Os nomes aparecem apenas para dizer
+com quais aparelhos este plugin conversa.
 
 ## Licença
 

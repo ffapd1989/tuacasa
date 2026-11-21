@@ -6,8 +6,8 @@ Onde o Tua Casa é distribuído, e o que cada destino exige dele.
 
 | Destino | Situação |
 |---|---|
-| **Versão no GitHub** | no ar desde a v1.0.0 — os passos e os textos estão no [LAUNCH.pt-BR.md](LAUNCH.pt-BR.md) |
-| **Loja da Elgato (Marketplace)** | em preparação — listagem, arte e o checklist antes de submeter estão em [marketplace/LISTING.pt-BR.md](marketplace/LISTING.pt-BR.md) |
+| **Versão no GitHub** | no ar, hoje na v1.0.1 — os passos e os textos estão no [LAUNCH.pt-BR.md](LAUNCH.pt-BR.md) |
+| **Loja da Elgato (Marketplace)** | submetida e em revisão — listagem, arte e o checklist de submissão estão em [marketplace/LISTING.pt-BR.md](marketplace/LISTING.pt-BR.md) |
 
 ## Resolvido
 

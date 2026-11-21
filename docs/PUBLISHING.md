@@ -6,8 +6,8 @@ Where Tua Casa ships, and what each destination asks of it.
 
 | Destination | State |
 |---|---|
-| **GitHub release** | live since v1.0.0 — the steps and texts are in [LAUNCH.md](LAUNCH.md) |
-| **Elgato Marketplace** | being prepared — listing, art and the checklist before submitting are in [marketplace/LISTING.md](marketplace/LISTING.md) |
+| **GitHub release** | live, currently v1.0.1 — the steps and texts are in [LAUNCH.md](LAUNCH.md) |
+| **Elgato Marketplace** | submitted and in review — listing, art and the submission checklist are in [marketplace/LISTING.md](marketplace/LISTING.md) |
 
 ## Settled
 

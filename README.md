@@ -174,14 +174,14 @@ This plugin stands on work by others, all under permissive licenses:
 Every dependency, direct and transitive, with versions and the choice made on the two that
 ship under a choice of licences: [THIRD-PARTY.md](THIRD-PARTY.md).
 
-The QR pairing flow is the one the Home Assistant Tuya integration established. See
-[LIMITS.md](LIMITS.md) for an honest note about the application identity it relies on.
+The QR pairing flow is the one the Home Assistant Tuya integration established; what that
+means for you is in [LIMITS.md](LIMITS.md#pairing-relies-on-home-assistants-app-identity).
 
 ## Trademarks
 
-Tuya® and Smart Life® are trademarks of their respective owners. This project is **not
-affiliated with, endorsed by, or sponsored by** them. The names are used only to state which
-devices this plugin can talk to.
+Tuya®, Smart Life® and Tuya Smart® are registered trademarks of their respective owners. This
+project is **not affiliated with, endorsed by, or sponsored by** them. The names are used only
+to state which devices this plugin can talk to.
 
 ## License
 

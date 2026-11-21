@@ -22,10 +22,10 @@ again.
 | Issues | on |
 | Private vulnerability reporting | on — [SECURITY.md](../SECURITY.md) sends people to that button, and it does not exist until this is enabled |
 
-Description, 242 of the 350 characters GitHub allows:
+Description, 224 of the 350 characters GitHub allows:
 
 ```text
-Stream Deck plugin for Tuya®-compatible smart-home devices (Smart Life®, Tuya Smart®): lights, sockets, wall switches, blinds and scenes, driven over your own network in about 100 ms, with live state on every key. Windows · pt/en/es · GPL-3.0
+Stream Deck plugin for devices on the Tuya® or Smart Life® platform: lights, sockets, wall switches, blinds and scenes, driven over your own network in about 100 ms, with live state on every key. Windows · pt/en/es · GPL-3.0
 ```
 
 The social preview can only be uploaded by hand: *Settings → General → Social preview →
