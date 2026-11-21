@@ -42,35 +42,47 @@ gh api -X PUT repos/ffapd1989/tuacasa/private-vulnerability-reporting
 
 | Field | Value |
 |---|---|
-| Tag | `v1.0.0` |
-| Title | `Tua Casa 1.0.0` |
+| Tag | `v1.0.1` |
+| Title | `Tua Casa 1.0.1` |
 | Asset | `dist/com.felipedrummond.tuacasa.streamDeckPlugin`, built by `npm run pack` from the tagged commit |
 
-The version in the tag must match `Version` in the manifest (`1.0.0.0` — the Stream Deck
-wants four digits).
+The version in the tag must match `Version` in the manifest (`1.0.1.0` — the Stream Deck
+wants four digits). Each release's notes open with what changed since the one before, then
+repeat the install steps and the feature list for whoever arrives for the first time.
 
 Release notes:
 
 ```markdown
-The first public release.
+![Tua Casa: your home on the Stream Deck](https://raw.githubusercontent.com/ffapd1989/tuacasa/v1.0.1/docs/img/social-preview-en.png)
 
-**Install:** download `com.felipedrummond.tuacasa.streamDeckPlugin` below and double-click it. Python is inside the package, so there is nothing else to install. Then drag a Tua Casa action onto a key and the panel walks you through connecting your Smart Life or Tuya Smart account with a QR code.
+**New in 1.0.1:** the plugin icon now carries the name, "Tua Casa", so it is easy to spot in the Stream Deck app. Nothing else changes: installing it over 1.0.0 keeps your keys and your paired account.
 
-- **Light / socket** — on and off, with live state and watts where the device measures them. Each gang of a multi-gang wall switch is its own key.
-- **Blind** — open, close, stop, or nudge by a step you choose; the key draws where the blind actually is.
-- **Scene** — run a scene from your app, or record and replay one of your own.
-- **All off** — hold to switch off everything it can reach.
-- Commands go straight over your network (about 100 ms); devices that refuse local connections fall back to your account automatically.
-- Fourteen icons, nine colours, and a label you can style per key. Panel in English, Portuguese and Spanish.
+## Install
 
-Windows 10/11 and Stream Deck 7.1 or later. What does not work, and why: [LIMITS.md](https://github.com/ffapd1989/tuacasa/blob/main/LIMITS.md).
+1. Download **`com.felipedrummond.tuacasa.streamDeckPlugin`** below.
+2. Double-click it, and let the Stream Deck app install it.
+3. Drag a Tua Casa action onto a key. The panel asks for the user code from your Smart Life or Tuya Smart app and shows a QR code: scan it with the same app, and your devices appear in the list.
 
-Not affiliated with Tuya or Smart Life.
+Python comes inside the package, so there is nothing else to install and no terminal to open.
+
+## What it does
+
+- **Light / socket**: on and off, with live state and the watts where the device measures them. Each gang of a wall switch gets its own key.
+- **Blind**: open, close, stop, or move by a step. The key draws where the blind really is.
+- **Scene**: run a scene from your app, or record what is on right now and replay it with a tap.
+- **All off**: hold it to switch off everything it can reach.
+- Commands go straight over your own network, in about 100 ms. Devices that refuse local connections fall back to the cloud on their own.
+
+**Requirements:** Windows 10 or 11, Stream Deck 7.1 or later, devices already working in the Smart Life or Tuya Smart app, and the PC on the same network as them. What does not work, and why: [LIMITS.md](https://github.com/ffapd1989/tuacasa/blob/main/LIMITS.md).
+
+---
+
+Tuya®, Smart Life® and Tuya Smart® are registered trademarks of their respective owners; Tua Casa is not affiliated with them. Free and open source, GPL-3.0-or-later.
 ```
 
 ```powershell
-gh release create v1.0.0 dist/com.felipedrummond.tuacasa.streamDeckPlugin `
-  --title "Tua Casa 1.0.0" --notes-file <file with the notes above>
+gh release create v1.0.1 dist/com.felipedrummond.tuacasa.streamDeckPlugin `
+  --title "Tua Casa 1.0.1" --notes-file <file with the notes above>
 ```
 
 ## Announcement posts

@@ -41,17 +41,19 @@ não vai para o GitHub (ele aceita uma só). Ela serve para o post em português
 
 | Campo | Valor |
 |---|---|
-| Tag | `v1.0.0` |
-| Título | `Tua Casa 1.0.0` |
+| Tag | `v1.0.1` |
+| Título | `Tua Casa 1.0.1` |
 | Arquivo | `dist/com.felipedrummond.tuacasa.streamDeckPlugin`, gerado pelo `npm run pack` no commit da tag |
 
-O número da tag tem de bater com o `Version` do manifest (`1.0.0.0` — o Stream Deck quer
-quatro dígitos).
+O número da tag tem de bater com o `Version` do manifest (`1.0.1.0` — o Stream Deck quer
+quatro dígitos). As notas de cada versão abrem com o que mudou desde a anterior e depois
+repetem a instalação e os recursos, para quem chega pela primeira vez.
 
-As notas da versão estão em inglês no [LAUNCH.md](LAUNCH.md#the-release). Dizem: primeira
-versão pública; como instalar (baixar, dois cliques, Python já vem dentro); as quatro ações;
-a rota local de ~100 ms com a nuvem de reserva; ícones, cores e rótulo por tecla; painel em
-três idiomas; requisitos; link para o LIMITS; e o aviso de não afiliação.
+As notas da versão estão em inglês no [LAUNCH.md](LAUNCH.md#the-release). Dizem: o que há de
+novo na 1.0.1 (o ícone com o nome, e instalar por cima da 1.0.0 mantém as teclas e a conta
+pareada); como instalar (baixar, dois cliques, parear com o código de usuário e o QR, Python
+já dentro); as quatro ações e a rota local de ~100 ms com a nuvem de reserva; os requisitos;
+o link para o LIMITS; e o aviso de marcas registradas.
 
 ## Posts de divulgação
 
